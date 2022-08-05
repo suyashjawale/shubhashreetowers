@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta http-equiv="pragma" content="no-cache">
+      <meta http-equiv="cache-control" content="no-cache">
+      <title>Shubhashree Tower Maintenance</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+      <link rel="stylesheet" type="text/css" href="demo.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   </head>
+   <body>
+      <nav class="navbar py-2" style="background-color: #712cf9;">
+         <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#" onclick="this.blur();" onfocus="this.blur();">Shubhashree Tower</a>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link text-primary fw-semibold" href="guidelines.html">Guidelines</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-primary fw-semibold" href="/admin">Admin Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+         </div>
+      </nav>
+      <div class="container">
+         <div class="text-end mt-2">
+            <div id="google_translate_element"></div>
+            <script type="text/javascript">
+               function googleTranslateElementInit() {
+                 new google.translate.TranslateElement(
+                   {pageLanguage: '', includedLanguages : 'en,mr,hi,kn'},
+                   'google_translate_element'
+                 );
+               }
+            </script>
+            <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+         </div>
+           <div class="mb-3 text-center mt-2">
+            <div class="fs-6 fw-semibold notranslate">नोंद  - भरलेला मेन्टेनन्स  हा मागील महिन्यासाठी गृहीत धरला जातो .</div>
+            </div>
+      </div>
+      <div class="container mt-4 px-2">
+         <div class="accordion accordion-flush" id="accordionExample">
+<!-- ___________________________________________________________________________________________________ -->
+
+            <% if(data.length==0){ %>
+               <div class="my-5 text-center fw-semibold text-danger">Unavailable</div>
+            <% } %>
+            <% data.forEach((element,index)=>{ %>
+            
+            <div class="accordion-item border-0">
+               <h2 class="accordion-header border border-info my-2 rounded-4" id="heading<%= index %>">
+                  <button class="accordion-button collapsed
+                     fw-semibold rounded-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= index %>" aria-expanded="true" aria-controls="collapse<%= index %>">
+                  <%= element.month_name %>
+                  </button>
+               </h2>
+               <div id="collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="heading<%= index %>" data-bs-parent="#accordionExample">
+                  <div class="accordion-body px-0 mx-0">
+                     <button class="btn btn-sm bg-success text-white mb-3 print" target_div="<%= element.key %>">Download Payment</button>
+                     <button class="btn btn-sm bg-success text-white mb-3 print" target_div="<%= element.key %>other">Download Other</button>
+                     <div id="<%= element.key %>">
+                        <div class="fs-6 fw-semibold mb-3">Payment Details <%= element.month_name %></div>
+                        <div class="table-responsive mb-3">
+                           <table class="table table-hover table-bordered border-secondary border-opacity-25">
+                              <thead>
+                                 <tr>
+                                    <th scope="col" class="notranslate">Flat No.</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Payment</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Date</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              <% element.maintenance.forEach((ele,ind)=>{ %>
+                                 <tr>
+                                    <th scope="row"> <%= ind+1 %> </th>
+                                    <td><%= ele.name %></td>
+                                    <td><button class="btn btn-sm <%= ele.maintenance_status==1?text='bg-success':'bg-danger' %>  text-white"><%= ele.maintenance_status==1?text='Paid':'Unpaid' %></button></td>
+                                    <td><%= ele.maintenance_status==1?ele.maintenance_amount:'' %></td>
+                                    <td><%= ele.maintenance_status==1?dt=moment(ele.maintenance_date).format('DD/MM/YYYY'):dt=""  %></td>
+                                 </tr>
+                              <% }) %>
+
+                                 <tr>
+                                    <th scope="row">Total</th>
+                                    <td colspan="4" class="fw-semibold"><%= element.savings.maintenance_total %></td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div> 
+                     <div id="<%= element.key %>other">
+                        <div class="fs-6 fw-semibold mb-3">Extra Earnings - <%= element.month_name %> </div>
+                        <div class="table-responsive mb-3">
+                           <table class="table table-hover table-bordered border-secondary border-opacity-25">
+                              <thead>
+                                 <tr>
+                                    <th scope="col">Sno.</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Date</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              <%   element.earnings.forEach((ele,ind)=>{ %>
+                                 <tr>
+                                    <th scope="row"> <%= ind+1 %> </th>
+                                    <td> <%= ele.earning_title %> </td>
+                                    <td> <%= ele.earning_amount %> </td>
+                                    <td> <%= moment(ele.earning_date).format('DD/MM/YYYY') %> </td>
+                                 </tr>
+                              <% }) %>
+                              <tr>
+                                 <th scope="row">Total</th>
+                                 <td colspan="3" class="fw-semibold"> <%= element.savings.earnings_total %> </td>
+                              </tr>
+                           </tbody>
+                           </table>
+                        </div>
+
+                        <div class="fs-6 fw-semibold mb-3">Expenses - <%= element.month_name %> </div>
+                        <div class="table-responsive mb-3">
+                           <table class="table table-hover table-bordered border-secondary border-opacity-25">
+                              <thead>
+                                 <tr>
+                                    <th scope="col">Sno.</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Date</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <% element.expenses.forEach((ele,ind)=>{  %>
+                                 <tr>
+                                    <th scope="row"> <%= ind+1 %> </th>
+                                    <td> <%= ele.expense_title %> </td>
+                                    <td> <%= ele.expense_amount %> </td>
+                                    <td> <%= moment(ele.expense_date).format('DD/MM/YYYY') %> </td>
+                                 </tr>
+                                 <% }) %>
+                                 <tr>
+                                    <th scope="row">Total</th>
+                                    <td colspan="3" class="fw-semibold"> <%= element.savings.expenses_total %> </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                        <div class="fs-6 fw-semibold mb-3">Savings - July 2022</div>
+                        <div class="table-responsive mb-3">
+                           <table class="table table-hover table-bordered border-secondary border-opacity-25">
+                              <thead>
+                                 <tr>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Amount</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr>
+                                    <th scope="row">&nbsp;&nbsp; Maintenance</th>
+                                    <td><%= element.savings.maintenance_total %></td>
+                                 </tr>
+                                 <tr>
+                                    <th scope="row">+ Prev. Savings</th>
+                                    <td><%= element.savings.previous_month_total %></td>
+                                 </tr>
+                                 <tr>
+                                    <th scope="row">+ Extra Earnings</th>
+                                    <td><%= element.savings.earnings_total %></td>
+                                 </tr>
+                                 <tr>
+                                    <th scope="row">- &nbsp;Expenses</th>
+                                    <td><%= element.savings.expenses_total %></td>
+                                 </tr>
+                                 <tr>
+                                    <th scope="row">Total</th>
+                                    <td colspan="2" class="fw-semibold"><%= element.savings.total %></td>
+                                 </tr>
+                                 <tr>
+                                    <th>
+                                       <%= element.savings.note!=='None'?element.savings.note:" " %>
+                                    </th>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>               
+                  </div>
+               </div>
+            </div>
+
+         <% }) %>
+<!-- ----------------------------------------------------------------------------------------------------------------------------------------- -->            
+            <hr class="text-white m-5">
+         </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+   </body>
+</html>
+
+<script type="text/javascript" src="demo.js"></script>

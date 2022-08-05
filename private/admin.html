@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container">
+      <div class="mx-lg-5 mt-5">
+        <div class="fw-semibold text-center fs-3 text-primary my-3">Admin Login</div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" autocomplete="off" required/>
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" required>
+        </div>
+        <div class="mb-3">
+          <label class="text-danger fw-semibold" id="error"></label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+      $("button").click(()=>{
+
+        $.ajax({
+            url : "/authenticate",
+            type: "POST",
+            data : {"email":$("#exampleInputEmail1").val(),"password":$("#exampleInputPassword1").val()},
+            success: function(data, textStatus, jqXHR)
+            {
+                window.location.href = "/admin";
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                $("#error").html(jqXHR.responseText);
+            }
+        });
+
+      });
+});
+
+</script>
