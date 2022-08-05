@@ -12,7 +12,7 @@ const expensesRoute = require('./routes/expenses')
 const noteRoute = require('./routes/note')
 
 const app = express()
-const port = 3000
+const port = process.env.PORT ||5000;
 
 app.set('view engine', 'ejs')
 app.locals.moment = require('moment');
