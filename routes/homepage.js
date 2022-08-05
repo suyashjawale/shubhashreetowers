@@ -40,7 +40,10 @@ router.get('/', (req, res) => {
 
     let sql = "select * from months order by created_date desc;"
     let month = []
+
     connection.query(sql, (error, results, fields) => {
+        if(typeof results==="undefined")
+        res.render('load')
         if (results.length >0) {
             let processed = 0;
             results.forEach((element, index, arr) => {
@@ -57,6 +60,7 @@ router.get('/', (req, res) => {
             res.render("index",{"data":[]})
         }
     })
+
 })
 
 module.exports = router
