@@ -73,147 +73,147 @@
         
          <% if(maintenance.length>0){ %>
       <div id="<%= maintenance[0].month_id %>">
-      
 
-          <div class="fs-6 fw-semibold mb-3">Payment Details <%= maintenance[0].month_name %></div>
-          <div class="table-responsive mb-3">
-            <table class="table table-hover table-bordered border-secondary border-opacity-25">
-              <thead>
-                <tr>
-                  <th scope="col" class="notranslate">Flat No.</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Payment</th>
-                  <th scope="col">Amount</th>
-                  <th scope="col">Payment Date</th>
-                  <th scope="col">Edit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% maintenance.forEach((element,index)=>{ %>
-                <tr>
-                  <th scope="row"><%= element.maintenance_flat_no %></th>
-                  <td><%= element.name %></td>
-                  <td><button class="btn btn-sm <%= element.maintenance_status==1?maintenance_status='bg-success':maintenance_status='bg-danger' %> text-white"><%= element.maintenance_status==1?maintenance_status="Paid":maintenance_status="Unpaid" %></button></td>
-                  <td><%= element.maintenance_status==1?amt=element.maintenance_amount:amt=""%></td>
-                  <td><%= element.maintenance_status==1?dt=moment(element.maintenance_date).format('DD/MM/YYYY'):dt=""  %></td>
-                  <td><button class="btn btn-sm bg-primary text-white edit_maintenance" maintenance_edit_id="<%= element.maintenance_id %>">Edit</button></td>
-                </tr>
-                <%})%>
-                <tr>
-                  <th scope="row">Total</th>
-                  <td class="fw-semibold" id="maintenance_total" colspan="5"><%= savings[0].maintenance_total %></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-      
-          <div class="fs-6 fw-semibold mb-3">Extra Earnings - <%= maintenance[0].month_name %> </div>
-          <div class="my-3"><button class="btn btn-sm bg-primary text-white" data-bs-toggle="modal" data-bs-target="#addExtraEarning">Add Earnings</button></div>
-          <div class="table-responsive mb-3">
-            <table class="table table-hover table-bordered border-secondary border-opacity-25" id="earnings_rows">
-              <thead>
-                <tr>
-                  <th scope="col">Sno.</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Amount</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Edit</th>
-                  <th scope="col">Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% earnings.forEach((element,index)=>{ %>
-  
-                <tr>
-                  <th scope="row" class="earning_index"><%= index+1 %></th>
-                  <td><%= element.earning_title %></td>
-                  <td><%= element.earning_amount %></td>
-                  <td><%= moment(element.earning_date).format('DD/MM/YYYY') %></td>
-                  <td><button class="btn btn-sm bg-primary text-white edit_earning" earning_edit_id="<%= element.earning_id %>">Edit</button></td>
-                  <td><button class="btn btn-sm bg-danger text-white delete_earning" earning_delete_id="<%= element.earning_id %>">Delete</button></td>
-                </tr>
-  
-                <% }) %>
-                <tr>
-                  <th scope="row">Total</th>
-                  <td colspan="5" class="fw-semibold" id="extra_earnings_total"><%= savings[0].earnings_total %></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-      
-          <div class="fs-6 fw-semibold mb-3">Expenses - <%= maintenance[0].month_name %></div>
-          <div class="my-3"><button class="btn btn-sm bg-primary text-white" data-bs-toggle="modal" data-bs-target="#addExpense">Add Expenses</button></div>
-          <div class="table-responsive mb-3">
-            <table class="table table-hover table-bordered border-secondary border-opacity-25" id="expense_rows">
-              <thead>
-                <tr>
-                  <th scope="col">Sno.</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Amount</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Edit</th>
-                  <th scope="col">Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% expenses.forEach((element,index)=>{ %>
-  
-                <tr>
-                  <th scope="row" class="expense_index"><%= index+1 %></th>
-                  <td><%= element.expense_title %></td>
-                  <td><%= element.expense_amount %></td>
-                  <td><%= moment(element.expense_date).format('DD/MM/YYYY') %></td>
-                  <td><button class="btn btn-sm bg-primary text-white edit_expense" expense_edit_id="<%= element.expense_id %>">Edit</button></td>
-                  <td><button class="btn btn-sm bg-danger text-white delete_expense" expense_delete_id="<%= element.expense_id %>">Delete</button></td>
-                </tr>
-  
-                <% }) %>
-                <tr>
-                  <th scope="row">Total</th>
-                  <td colspan="6" class="fw-semibold" id="expenses_total"><%= savings[0].expenses_total %></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
 
-          <div class="fs-6 fw-semibold mb-3">Savings - <%= maintenance[0].month_name %> </div>
-          <div class="table-responsive mb-3">
-            <table class="table table-hover table-bordered border-secondary border-opacity-25">
-              <thead>
-                <tr>
-                  <th scope="col">Category</th>
-                  <th scope="col">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">&nbsp;&nbsp; Maintenance</th>
-                  <td id="maintenance_reference"><%= savings[0].maintenance_total %></td>
-                </tr>
-                <tr>
-                  <th scope="row">+ Prev. Savings</th>
-                  <td id="previous_earnings_reference"><%= savings[0].previous_month_total %></td>
-                </tr>
-                <tr>
-                  <th scope="row">+ Extra Earnings</th>
-                  <td id="extra_earnings_reference"><%= savings[0].earnings_total %></td>
-                </tr>
-                <tr>
-                  <th scope="row">- &nbsp;Expenses</th>
-                  <td id="expenses_reference"><%= savings[0].expenses_total %></td>
-                </tr>
-                <tr>
-                  <th scope="row">Total</th>
-                  <td colspan="2" class="fw-semibold" id="savings_total"><%= savings[0].total %></td>
-                </tr>
-                <tr>
-                  <th scope="row" id="my_note"> <%= savings[0].note %> </th>
-                  <td><button class="btn btn-sm bg-primary text-white" id="edit_note">Edit</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="fs-6 fw-semibold mb-3">Payment Details <%= maintenance[0].month_name %></div>
+        <div class="table-responsive mb-3">
+          <table class="table table-hover table-bordered border-secondary border-opacity-25">
+            <thead>
+              <tr>
+                <th scope="col" class="notranslate">Flat No.</th>
+                <th scope="col">Name</th>
+                <th scope="col">Payment</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Payment Date</th>
+                <th scope="col">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% maintenance.forEach((element,index)=>{ %>
+              <tr>
+                <th scope="row"><%= element.maintenance_flat_no %></th>
+                <td><%= element.name %></td>
+                <td><button class="btn btn-sm <%= element.maintenance_status==1?maintenance_status='bg-success':maintenance_status='bg-danger' %> text-white"><%= element.maintenance_status==1?maintenance_status="Paid":maintenance_status="Unpaid" %></button></td>
+                <td><%= element.maintenance_status==1?amt=element.maintenance_amount:amt=""%></td>
+                <td><%= element.maintenance_status==1?dt=moment(element.maintenance_date).format('DD/MM/YYYY'):dt=""  %></td>
+                <td><button class="btn btn-sm bg-primary text-white edit_maintenance" maintenance_edit_id="<%= element.maintenance_id %>">Edit</button></td>
+              </tr>
+              <%})%>
+              <tr>
+                <th scope="row">Total</th>
+                <td class="fw-semibold" id="maintenance_total" colspan="5"><%= savings[0].maintenance_total %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="fs-6 fw-semibold mb-3">Extra Earnings - <%= maintenance[0].month_name %> </div>
+        <div class="my-3"><button class="btn btn-sm bg-primary text-white" data-bs-toggle="modal" data-bs-target="#addExtraEarning">Add Earnings</button></div>
+        <div class="table-responsive mb-3">
+          <table class="table table-hover table-bordered border-secondary border-opacity-25" id="earnings_rows">
+            <thead>
+              <tr>
+                <th scope="col">Sno.</th>
+                <th scope="col">Title</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% earnings.forEach((element,index)=>{ %>
+
+              <tr>
+                <th scope="row" class="earning_index"><%= index+1 %></th>
+                <td><%= element.earning_title %></td>
+                <td><%= element.earning_amount %></td>
+                <td><%= moment(element.earning_date).format('DD/MM/YYYY') %></td>
+                <td><button class="btn btn-sm bg-primary text-white edit_earning" earning_edit_id="<%= element.earning_id %>">Edit</button></td>
+                <td><button class="btn btn-sm bg-danger text-white delete_earning" earning_delete_id="<%= element.earning_id %>">Delete</button></td>
+              </tr>
+
+              <% }) %>
+              <tr>
+                <th scope="row">Total</th>
+                <td colspan="5" class="fw-semibold" id="extra_earnings_total"><%= savings[0].earnings_total %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="fs-6 fw-semibold mb-3">Expenses - <%= maintenance[0].month_name %></div>
+        <div class="my-3"><button class="btn btn-sm bg-primary text-white" data-bs-toggle="modal" data-bs-target="#addExpense">Add Expenses</button></div>
+        <div class="table-responsive mb-3">
+          <table class="table table-hover table-bordered border-secondary border-opacity-25" id="expense_rows">
+            <thead>
+              <tr>
+                <th scope="col">Sno.</th>
+                <th scope="col">Title</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% expenses.forEach((element,index)=>{ %>
+
+              <tr>
+                <th scope="row" class="expense_index"><%= index+1 %></th>
+                <td><%= element.expense_title %></td>
+                <td><%= element.expense_amount %></td>
+                <td><%= moment(element.expense_date).format('DD/MM/YYYY') %></td>
+                <td><button class="btn btn-sm bg-primary text-white edit_expense" expense_edit_id="<%= element.expense_id %>">Edit</button></td>
+                <td><button class="btn btn-sm bg-danger text-white delete_expense" expense_delete_id="<%= element.expense_id %>">Delete</button></td>
+              </tr>
+
+              <% }) %>
+              <tr>
+                <th scope="row">Total</th>
+                <td colspan="6" class="fw-semibold" id="expenses_total"><%= savings[0].expenses_total %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="fs-6 fw-semibold mb-3">Savings - <%= maintenance[0].month_name %> </div>
+        <div class="table-responsive mb-3">
+          <table class="table table-hover table-bordered border-secondary border-opacity-25">
+            <thead>
+              <tr>
+                <th scope="col">Category</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">&nbsp;&nbsp; Maintenance</th>
+                <td id="maintenance_reference"><%= savings[0].maintenance_total %></td>
+              </tr>
+              <tr>
+                <th scope="row">+ Prev. Savings</th>
+                <td id="previous_earnings_reference"><%= savings[0].previous_month_total %></td>
+              </tr>
+              <tr>
+                <th scope="row">+ Extra Earnings</th>
+                <td id="extra_earnings_reference"><%= savings[0].earnings_total %></td>
+              </tr>
+              <tr>
+                <th scope="row">- &nbsp;Expenses</th>
+                <td id="expenses_reference"><%= savings[0].expenses_total %></td>
+              </tr>
+              <tr>
+                <th scope="row">Total</th>
+                <td colspan="2" class="fw-semibold" id="savings_total"><%= savings[0].total %></td>
+              </tr>
+              <tr>
+                <th scope="row" id="my_note"> <%= savings[0].note %> </th>
+                <td><button class="btn btn-sm bg-primary text-white" id="edit_note">Edit</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
       </div>
       <%}%>
@@ -232,298 +232,290 @@
      <div class="modal-content">
        <div class="modal-header">
          <h5 class="modal-title" id="exampleModalLabel">Edit Earnings <%= maintenance.length>0?maintenance[0].month_name:expense_modal='' %></h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-       </div>
-       <div class="modal-body">
-         <form>
-           <div class="mb-3">
-             <label class="form-label">Earning Title</label>
-             <input type="text" class="form-control" id="edit_earning_title" autocomplete="off" required />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Earning Amount</label>
-             <input type="number" class="form-control" id="edit_earning_amount" autocomplete="off" maxlength="10" required />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Date</label>
-             <input type="date" class="form-control" id="edit_earning_date" autocomplete="off" />
-           </div>
-         </form>
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-         <button type="button" class="btn btn-primary" id="put_earning">Save</button>
-       </div>
-     </div>
-   </div>
- </div> 
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label class="form-label">Earning Title</label>
+          <input type="text" class="form-control" id="edit_earning_title" autocomplete="off" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Earning Amount</label>
+          <input type="number" class="form-control" id="edit_earning_amount" autocomplete="off" maxlength="10" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Date</label>
+          <input type="date" class="form-control" id="edit_earning_date" autocomplete="off" />
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary" id="put_earning">Save</button>
+    </div>
+  </div>
+  </div>
+  </div>
 
- <div class="modal fade" id="editMaintenance" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h5 class="modal-title" id="exampleModalLabel">Edit Maintenance <%= maintenance.length>0?maintenance[0].month_name:expense_modal='' %></h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-       </div>
-       <div class="modal-body">
-         <form>
-           <div class="mb-3">
-             <label class="form-label">Flat No.</label>
-             <input type="text" class="form-control" id="edit_flat_no" disabled />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Owner name</label>
-             <input type="text" class="form-control" id="edit_owner_name" disabled />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Paid Status</label>
-             <select class="form-select" id="edit_payment_status">
-               <option>Select Status</option>
-               <option value="0">Unpaid</option>
-               <option value="1">Paid</option>
-             </select>
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Amount</label>
-             <input type="number" class="form-control" id="edit_payment_amount" autocomplete="off" />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Date</label>
-             <input type="date" class="form-control" id="edit_payment_date" autocomplete="off" />
-           </div>
-         </form>
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-         <button type="button" class="btn btn-primary" id="put_maintenance">Save</button>
-       </div>
-     </div>
-   </div>
- </div>
+  <div class="modal fade" id="editMaintenance" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Maintenance <%= maintenance.length>0?maintenance[0].month_name:expense_modal='' %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Flat No.</label>
+              <input type="text" class="form-control" id="edit_flat_no" disabled />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Owner name</label>
+              <input type="text" class="form-control" id="edit_owner_name" disabled />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Paid Status</label>
+              <select class="form-select" id="edit_payment_status">
+                <option>Select Status</option>
+                <option value="0">Unpaid</option>
+                <option value="1">Paid</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Amount</label>
+              <input type="number" class="form-control" id="edit_payment_amount" autocomplete="off" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="edit_payment_date" autocomplete="off" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="put_maintenance">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
- <div class="modal fade" id="addMonth" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h5 class="modal-title" id="exampleModalLabel">Add Month</h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-       </div>
-       <div class="modal-body">
-         <div class="mb-3">
-           <label class="form-label">Month Id</label>
-           <input type="text" class="form-control" id="insert_month_id" autocomplete="off" maxlength="15" required />
-         </div>
-         <div class="mb-3">
-           <label class="form-label">Month Name</label>
-           <input type="text" class="form-control" id="insert_month_name" autocomplete="off" maxlength="20" required />
-         </div>
-         <div class="mb-3">
-           <label class="form-label">Previous Month</label>
-           <select class="form-select form-select-sm" id="insert_month_previous">
-             <option value="None">Not Applicable</option>
-             <% if(months_list.length>0){months_list.forEach((element)=>{%>
-             <option value="<%= element.month_id %>" <%= (element.latest==1)?selected='selected':selected='' %>> <%= element.month_name %> </option>
-             <% })} %>
-           </select>
-         </div>
-         <div class="mb-3">
-           <label class="form-label">Latest</label>
-           <select class="form-select" id="insert_month_latest">
-             <option value="1" selected>Yes</option>
-             <option value="0">No</option>
-           </select>
-         </div>
+  <div class="modal fade" id="addMonth" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Month</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Month Id</label>
+            <input type="text" class="form-control" id="insert_month_id" autocomplete="off" maxlength="15" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Month Name</label>
+            <input type="text" class="form-control" id="insert_month_name" autocomplete="off" maxlength="20" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Previous Month</label>
+            <select class="form-select form-select-sm" id="insert_month_previous">
+              <option value="None">Not Applicable</option>
+              <% if(months_list.length>0){months_list.forEach((element)=>{%>
+              <option value="<%= element.month_id %>" <%= (element.latest==1)?selected='selected':selected='' %>> <%= element.month_name %> </option>
+              <% })} %>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Latest</label>
+            <select class="form-select" id="insert_month_latest">
+              <option value="1" selected>Yes</option>
+              <option value="0">No</option>
+            </select>
+          </div>
 
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-         <button type="button" class="btn btn-primary" id="save_month">Save</button>
-       </div>
-     </div>
-   </div>
- </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="save_month">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
- <div class="modal fade" id="addExtraEarning" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h5 class="modal-title" id="exampleModalLabel">Extra Earnings <%= maintenance.length>0?maintenance[0].month_name:earning_modal='' %></h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-       </div>
-       <div class="modal-body">
-         <form>
-           <div class="mb-3">
-             <label class="form-label">Earning Title</label>
-             <input type="text" class="form-control" id="insert_earnings_title" autocomplete="off" required />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Earning Amount</label>
-             <input type="number" class="form-control" id="insert_earnings_amount" autocomplete="off" maxlength="10" required />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Date</label>
-             <input type="date" class="form-control" id="insert_earnings_date" autocomplete="off" />
-           </div>
-         </form>
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-         <button type="button" class="btn btn-primary" id="save_earnings">Save</button>
-       </div>
-     </div>
-   </div>
- </div>
+  <div class="modal fade" id="addExtraEarning" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Extra Earnings <%= maintenance.length>0?maintenance[0].month_name:earning_modal='' %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Earning Title</label>
+              <input type="text" class="form-control" id="insert_earnings_title" autocomplete="off" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Earning Amount</label>
+              <input type="number" class="form-control" id="insert_earnings_amount" autocomplete="off" maxlength="10" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="insert_earnings_date" autocomplete="off" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="save_earnings">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
- <div class="modal fade" id="addExpense" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h5 class="modal-title" id="exampleModalLabel">Expenses <%= maintenance.length>0?maintenance[0].month_name:expense_modal='' %></h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-       </div>
-       <div class="modal-body">
-         <form>
-           <div class="mb-3">
-             <label class="form-label">Expense Title</label>
-             <input type="text" class="form-control" id="insert_expense_title" autocomplete="off" required />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Expense Amount</label>
-             <input type="number" class="form-control" id="insert_expense_amount" autocomplete="off" maxlength="10" required />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Date</label>
-             <input type="date" class="form-control" id="insert_expense_date" autocomplete="off" />
-           </div>
-         </form>
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-         <button type="button" class="btn btn-primary" id="save_expense">Save</button>
-       </div>
-     </div>
-   </div>
- </div>
+  <div class="modal fade" id="addExpense" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Expenses <%= maintenance.length>0?maintenance[0].month_name:expense_modal='' %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Expense Title</label>
+              <input type="text" class="form-control" id="insert_expense_title" autocomplete="off" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Expense Amount</label>
+              <input type="number" class="form-control" id="insert_expense_amount" autocomplete="off" maxlength="10" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="insert_expense_date" autocomplete="off" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="save_expense">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
- <div class="modal fade" id="editExpense" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h5 class="modal-title" id="exampleModalLabel">Edit Expenses <%= maintenance.length>0?maintenance[0].month_name:expense_modal='' %></h5>
-         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-       </div>
-       <div class="modal-body">
-         <form>
-           <div class="mb-3">
-             <label class="form-label">Expense Title</label>
-             <input type="text" class="form-control" id="edit_expense_title" autocomplete="off" required />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Expense Amount</label>
-             <input type="number" class="form-control" id="edit_expense_amount" autocomplete="off" maxlength="10" required />
-           </div>
-           <div class="mb-3">
-             <label class="form-label">Date</label>
-             <input type="date" class="form-control" id="edit_expense_date" autocomplete="off" />
-           </div>
-         </form>
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-         <button type="button" class="btn btn-primary" id="put_expense">Save</button>
-       </div>
-     </div>
-   </div>
- </div>
-
-
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<script type="text/javascript" src="demo.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.3/moment.min.js"></script>
+  <div class="modal fade" id="editExpense" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Expenses <%= maintenance.length>0?maintenance[0].month_name:expense_modal='' %></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label class="form-label">Expense Title</label>
+              <input type="text" class="form-control" id="edit_expense_title" autocomplete="off" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Expense Amount</label>
+              <input type="number" class="form-control" id="edit_expense_amount" autocomplete="off" maxlength="10" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" id="edit_expense_date" autocomplete="off" />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="put_expense">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
-<script type="text/javascript">
-   $(document).ready(function(){
-   
-       $("body").on('click','#save_month',(e)=>{   
-         let insert_month_id = $("#insert_month_id").val();
-         let insert_month_name = $("#insert_month_name").val();
-         let insert_month_previous = $("#insert_month_previous").val();
-         let insert_month_latest = $("#insert_month_latest").val(); 
-
-         if(insert_month_id!=null  && insert_month_name!=null && insert_month_previous!=null && insert_month_latest!=null)
-         {
-            $.ajax({
-                url : "/months",
-                type: "POST",
-                data : {
-                  "month_id": insert_month_id,
-                  "month_name": insert_month_name,
-                  "insert_month_previous": insert_month_previous,
-                  "insert_month_latest": insert_month_latest,
-               },
-                success: function(data, textStatus, jqXHR)
-                {
-                    window.location = `/admin?month=${insert_month_id}`;
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert("Error");
-                }
-            });
-         }
-         else
-         alert("Fill all field");
-       });
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script type="text/javascript" src="demo.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.3/moment.min.js"></script>
 
 
-       $("body").on('click','#edit_note',(e)=>{
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      $("body").on('click', '#save_month', (e) => {
+        let insert_month_id = $("#insert_month_id").val();
+        let insert_month_name = $("#insert_month_name").val();
+        let insert_month_previous = $("#insert_month_previous").val();
+        let insert_month_latest = $("#insert_month_latest").val();
+
+        if (insert_month_id != null && insert_month_name != null && insert_month_previous != null && insert_month_latest != null) {
+          $.ajax({
+            url: "/months",
+            type: "POST",
+            data: {
+              "month_id": insert_month_id,
+              "month_name": insert_month_name,
+              "insert_month_previous": insert_month_previous,
+              "insert_month_latest": insert_month_latest,
+            },
+            success: function(data, textStatus, jqXHR) {
+              window.location = `/admin?month=${insert_month_id}`;
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
+        } else
+          alert("Fill all field");
+      });
+
+
+      $("body").on('click', '#edit_note', (e) => {
         let note = prompt("Enter note", $("#my_note").html());
         let month_id = $("#get_current_month").attr("current_month");
         if (note != null && note != "") {
-          
+
           $.ajax({
-                   url : "/note",
-                   type: "PUT",
-                   data : {
-                     "month_id": month_id,
-                     "note" : note
-                  },
-                   success: function(data, textStatus, jqXHR)
-                   {
-                      $("#my_note").html(note);
-                   },
-                   error: function (jqXHR, textStatus, errorThrown)
-                   {
-                       alert("Error");
-                   }
-               });
+            url: "/note",
+            type: "PUT",
+            data: {
+              "month_id": month_id,
+              "note": note
+            },
+            success: function(data, textStatus, jqXHR) {
+              $("#my_note").html(note);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
         }
       });
 
-       $("body").on('click','#save_expense',(e)=>{
-         let insert_expense_title = $("#insert_expense_title").val();
-         let insert_expense_amount = $("#insert_expense_amount").val();
-         let insert_expense_date = $("#insert_expense_date").val();
-         let insert_expense_month = $("#get_current_month").attr("current_month");
-          
-         if(insert_expense_title!=null  && insert_expense_amount!=null && insert_expense_date!="" && insert_expense_month!=null)
-         {
-            $.ajax({
-                url : "/expenses",
-                type: "POST",
-                data : {
-                  "insert_expense_title": insert_expense_title,
-                  "insert_expense_amount": insert_expense_amount,
-                  "insert_expense_date": insert_expense_date,
-                  "insert_expense_month": insert_expense_month
-               },
-                success: function(data, textStatus, jqXHR)
-                {                    
-                    let previous_row = $('#expense_rows tr:last');
-                    let element = parseInt(previous_row.prev().find('th').text())+1;
-                    previous_row.before(`<tr>
+      $("body").on('click', '#save_expense', (e) => {
+        let insert_expense_title = $("#insert_expense_title").val();
+        let insert_expense_amount = $("#insert_expense_amount").val();
+        let insert_expense_date = $("#insert_expense_date").val();
+        let insert_expense_month = $("#get_current_month").attr("current_month");
+
+        if (insert_expense_title != null && insert_expense_amount != null && insert_expense_date != "" && insert_expense_month != null) {
+          $.ajax({
+            url: "/expenses",
+            type: "POST",
+            data: {
+              "insert_expense_title": insert_expense_title,
+              "insert_expense_amount": insert_expense_amount,
+              "insert_expense_date": insert_expense_date,
+              "insert_expense_month": insert_expense_month
+            },
+            success: function(data, textStatus, jqXHR) {
+              let previous_row = $('#expense_rows tr:last');
+              let element = parseInt(previous_row.prev().find('th').text()) + 1;
+              previous_row.before(`<tr>
                                  <th scope="row">${isNaN(element)?1:element}</th>
                                  <td>${insert_expense_title}</td>
                                  <td>${insert_expense_amount}</td>
@@ -532,45 +524,42 @@
                                  <td><button class="btn btn-sm bg-danger text-white delete_expense" expense_delete_id="${data.expense_id}">Delete</button></td>
                               </tr>`)
 
-                    $('#expenses_total').html(data.expenses_total)
-                    $('#expenses_reference').html(data.expenses_total)
-                    $('#savings_total').html(data.total)
-                    reset_forms();
-                    $("#addExpense").modal('hide');
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert("Error");
-                }
-            });
-         }
-         else
-         alert("Fill all field");
-       });
-   
-       $("body").on('click','#save_earnings',(e)=>{
+              $('#expenses_total').html(data.expenses_total)
+              $('#expenses_reference').html(data.expenses_total)
+              $('#savings_total').html(data.total)
+              reset_forms();
+              $("#addExpense").modal('hide');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
+        } else
+          alert("Fill all field");
+      });
 
-         let insert_earnings_title = $("#insert_earnings_title").val();
-         let insert_earnings_amount = $("#insert_earnings_amount").val();
-         let insert_earnings_date = $("#insert_earnings_date").val();
-         let insert_earnings_month = $("#get_current_month").attr("current_month");
+      $("body").on('click', '#save_earnings', (e) => {
 
-         if(insert_earnings_title!=null  && insert_earnings_amount!=null && insert_earnings_date!="" && insert_earnings_month!=null)
-         {
-            $.ajax({
-                url : "/earnings",
-                type: "POST",
-                data : {
-                  "insert_earnings_title": insert_earnings_title,
-                  "insert_earnings_amount": insert_earnings_amount,
-                  "insert_earnings_date": insert_earnings_date,
-                  "insert_earnings_month": insert_earnings_month
-               },
-                success: function(data, textStatus, jqXHR)
-                {
-                    let previous_row = $('#earnings_rows tr:last');
-                    let element = parseInt(previous_row.prev().find('th').text())+1;
-                    previous_row.before(`<tr>
+        let insert_earnings_title = $("#insert_earnings_title").val();
+        let insert_earnings_amount = $("#insert_earnings_amount").val();
+        let insert_earnings_date = $("#insert_earnings_date").val();
+        let insert_earnings_month = $("#get_current_month").attr("current_month");
+
+        if (insert_earnings_title != null && insert_earnings_amount != null && insert_earnings_date != "" && insert_earnings_month != null) {
+          $.ajax({
+            url: "/earnings",
+            type: "POST",
+            data: {
+              "insert_earnings_title": insert_earnings_title,
+              "insert_earnings_amount": insert_earnings_amount,
+              "insert_earnings_date": insert_earnings_date,
+              "insert_earnings_month": insert_earnings_month
+            },
+            success: function(data, textStatus, jqXHR) {
+              $("#addExtraEarning").modal('hide');
+              let previous_row = $('#earnings_rows tr:last');
+              let element = parseInt(previous_row.prev().find('th').text()) + 1;
+              previous_row.before(`<tr>
                                  <th scope="row" class="earning_index">${isNaN(element)?1:element}</th>
                                  <td>${insert_earnings_title}</td>
                                  <td>${insert_earnings_amount}</td>
@@ -579,326 +568,293 @@
                                  <td><button class="btn btn-sm bg-danger text-white delete_earning" earning_delete_id="${data.earning_id}">Delete</button></td>
                               </tr>`)
 
-                    $('#extra_earnings_total').html(data.earnings_total)
-                    $('#extra_earnings_reference').html(data.earnings_total)
-                    $('#savings_total').html(data.total)
-                    reset_forms();
-                    $("#addExtraEarning").modal('hide');
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert("Error");
-                }
-            });
-         }
-         else
-         alert("Fill all field");
-       });
+              $('#extra_earnings_total').html(data.earnings_total)
+              $('#extra_earnings_reference').html(data.earnings_total)
+              $('#savings_total').html(data.total)
+              reset_forms();
 
-      
-      $("body").on('click','.delete_earning',(e) =>{ 
-         const delete_earning_id=$(e.currentTarget).attr('earning_delete_id');
-         const delete_month = $("#get_current_month").attr("current_month");
-         if(confirm(`Delete earning id ${delete_earning_id}`))
-         {
-            $.ajax({
-                url : "/earnings",
-                type: "delete",
-                data : {
-                  "delete_earning_id": delete_earning_id,
-                  "delete_month": delete_month
-               },
-                success: function(data, textStatus, jqXHR)
-                {
-                    $('#extra_earnings_total').html(data[0].earnings_total)
-                    $('#extra_earnings_reference').html(data[0].earnings_total)
-                    $('#savings_total').html(data[0].total)
-
-                    $(e.currentTarget).parents(':eq(1)').remove();
-                    $(".earning_index").each(function (index) {
-                        $(this).text(index+1);
-                     });
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert("Error");
-                }
-            });
-         }
-         else
-         alert("Fill all field");
-      });
-      
-      $("body").on('click','.delete_expense',(e) =>{ 
-         const delete_expense_id=$(e.currentTarget).attr('expense_delete_id');
-         const delete_expense_month = $("#get_current_month").attr("current_month");
-
-         if(confirm(`Delete expense id ${delete_expense_id}`))
-         {
-            $.ajax({
-                url : "/expenses",
-                type: "DELETE",
-                data : {
-                  "delete_expense_id": delete_expense_id,
-                  "delete_expense_month":delete_expense_month
-               },
-                success: function(data, textStatus, jqXHR)
-                {
-                    $('#expenses_total').html(data[0].expenses_total)
-                    $('#expenses_reference').html(data[0].expenses_total)
-                    $('#savings_total').html(data[0].total)
-                    
-                    $(e.currentTarget).parents(':eq(1)').remove();
-                    $(".expense_index").each(function (index) {
-                    $(this).text(index+1);
-                  });
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert("Error");
-                }
-            });
-         }
-         else
-         alert("Fill all field");
-      });
-
-      $("body").on('click','.edit_expense',(e) =>{
-            const expense_id=$(e.currentTarget).attr('expense_edit_id');
-            if(expense_id!=null)  
-            {
-
-               $.ajax({
-                   url : "/expenses",
-                   type: "GET",
-                   data : {
-                     "expense_id": expense_id,
-                  },
-                   success: function(data, textStatus, jqXHR)
-                   {
-                        $('#edit_expense_title').val(data.expense_title);
-                        $('#edit_expense_amount').val(data.expense_amount);
-                        $('#edit_expense_date').val(moment(data.expense_date).format('YYYY-MM-DD'));
-                        $('#put_expense').attr('modal_expense_edit_id',expense_id);
-                        $("#editExpense").modal('show');
-                   },
-                   error: function (jqXHR, textStatus, errorThrown)
-                   {
-                       alert("Error");
-                   }
-               });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
             }
-            else
-         alert("Fill all field");
+          });
+        } else
+          alert("Fill all field");
+      });
+
+
+      $("body").on('click', '.delete_earning', (e) => {
+        const delete_earning_id = $(e.currentTarget).attr('earning_delete_id');
+        const delete_month = $("#get_current_month").attr("current_month");
+        if (confirm(`Delete earning id ${delete_earning_id}`)) {
+          $.ajax({
+            url: "/earnings",
+            type: "delete",
+            data: {
+              "delete_earning_id": delete_earning_id,
+              "delete_month": delete_month
+            },
+            success: function(data, textStatus, jqXHR) {
+              $('#extra_earnings_total').html(data[0].earnings_total)
+              $('#extra_earnings_reference').html(data[0].earnings_total)
+              $('#savings_total').html(data[0].total)
+
+              $(e.currentTarget).parents(':eq(1)').remove();
+              $(".earning_index").each(function(index) {
+                $(this).text(index + 1);
+              });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
+        } else
+          alert("Fill all field");
+      });
+
+      $("body").on('click', '.delete_expense', (e) => {
+        const delete_expense_id = $(e.currentTarget).attr('expense_delete_id');
+        const delete_expense_month = $("#get_current_month").attr("current_month");
+
+        if (confirm(`Delete expense id ${delete_expense_id}`)) {
+          $.ajax({
+            url: "/expenses",
+            type: "DELETE",
+            data: {
+              "delete_expense_id": delete_expense_id,
+              "delete_expense_month": delete_expense_month
+            },
+            success: function(data, textStatus, jqXHR) {
+              $('#expenses_total').html(data[0].expenses_total)
+              $('#expenses_reference').html(data[0].expenses_total)
+              $('#savings_total').html(data[0].total)
+
+              $(e.currentTarget).parents(':eq(1)').remove();
+              $(".expense_index").each(function(index) {
+                $(this).text(index + 1);
+              });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
+        } else
+          alert("Fill all field");
+      });
+
+      $("body").on('click', '.edit_expense', (e) => {
+        const expense_id = $(e.currentTarget).attr('expense_edit_id');
+        if (expense_id != null) {
+
+          $.ajax({
+            url: "/expenses",
+            type: "GET",
+            data: {
+              "expense_id": expense_id,
+            },
+            success: function(data, textStatus, jqXHR) {
+              $('#edit_expense_title').val(data.expense_title);
+              $('#edit_expense_amount').val(data.expense_amount);
+              $('#edit_expense_date').val(moment(data.expense_date).format('YYYY-MM-DD'));
+              $('#put_expense').attr('modal_expense_edit_id', expense_id);
+              $("#editExpense").modal('show');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
+        } else
+          alert("Fill all field");
       });
 
       // var domlog = function(obj){ console.log.apply(console, obj); };
 
-      $("body").on('click','#put_expense',(e) =>{
-            let edit_expense_id=$(e.currentTarget).attr('modal_expense_edit_id');
-            let edit_expense_title = $('#edit_expense_title').val();
-            let edit_expense_amount = $('#edit_expense_amount').val();
-            let edit_expense_date = $('#edit_expense_date').val();
-            let edit_expense_month = $("#get_current_month").attr("current_month");
+      $("body").on('click', '#put_expense', (e) => {
+        let edit_expense_id = $(e.currentTarget).attr('modal_expense_edit_id');
+        let edit_expense_title = $('#edit_expense_title').val();
+        let edit_expense_amount = $('#edit_expense_amount').val();
+        let edit_expense_date = $('#edit_expense_date').val();
+        let edit_expense_month = $("#get_current_month").attr("current_month");
 
-         if(edit_expense_id!=null  && edit_expense_title!=null && edit_expense_amount!=null && edit_expense_date!="")
-         {
-            $.ajax({
-                url : "/expenses",
-                type: "PUT",
-                data : {
-                  "edit_expense_id": edit_expense_id,
-                  "edit_expense_title": edit_expense_title,
-                  "edit_expense_amount": edit_expense_amount,
-                  "edit_expense_date": edit_expense_date,
-                  "edit_expense_month": edit_expense_month
-               },
-                success: function(data, textStatus, jqXHR)
-                {
-                     let element = $(`[expense_edit_id=${edit_expense_id}]`).closest('tr').find('td:lt(4)')
-                     element[0].textContent=edit_expense_title
-                     element[1].textContent=edit_expense_amount
-                     element[2].textContent=moment(edit_expense_date).format('DD/MM/YYYY')
+        if (edit_expense_id != null && edit_expense_title != null && edit_expense_amount != null && edit_expense_date != "") {
+          $.ajax({
+            url: "/expenses",
+            type: "PUT",
+            data: {
+              "edit_expense_id": edit_expense_id,
+              "edit_expense_title": edit_expense_title,
+              "edit_expense_amount": edit_expense_amount,
+              "edit_expense_date": edit_expense_date,
+              "edit_expense_month": edit_expense_month
+            },
+            success: function(data, textStatus, jqXHR) {
+              $("#editExpense").modal('hide');
+              let element = $(`[expense_edit_id=${edit_expense_id}]`).closest('tr').find('td:lt(4)')
+              element[0].textContent = edit_expense_title
+              element[1].textContent = edit_expense_amount
+              element[2].textContent = moment(edit_expense_date).format('DD/MM/YYYY')
 
-                    $('#expenses_total').html(data[0].expenses_total)
-                    $('#expenses_reference').html(data[0].expenses_total)
-                    $('#savings_total').html(data[0].total)
-                    reset_forms();
-                    $("#editExpense").modal('hide');
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert("Error");
-                }
-            });
-         }
-         else
-         alert("Fill all field");  
- 
+              $('#expenses_total').html(data[0].expenses_total)
+              $('#expenses_reference').html(data[0].expenses_total)
+              $('#savings_total').html(data[0].total)
+              reset_forms();
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
+        } else
+          alert("Fill all field");
+
       });
 
       const reset_forms = () => {
-            $('form').trigger('reset');
-            $('option').removeAttr('selected');
+        $('form').trigger('reset');
+        $('option').removeAttr('selected');
       }
 
-      $('[data-bs-dismiss=modal]').on('click', function (e) {
-            reset_forms();
-         });
+      $('[data-bs-dismiss=modal]').on('click', function(e) {
+        reset_forms();
+      });
 
-      $("body").on('click','.edit_maintenance',(e) =>{
-            const maintenance_id=$(e.currentTarget).attr('maintenance_edit_id');
-            if(maintenance_id!=null)  
-            {
-               $.ajax({
-                   url : "/maintenance",
-                   type: "POST",
-                   data : {
-                     "maintenance_id": maintenance_id,
-                  },
-                   success: function(data, textStatus, jqXHR)
-                   {
-                        $('#edit_flat_no').val(data[0].maintenance_flat_no);
-                        $('#edit_owner_name').val(data[0].name);
-                        $(`#edit_payment_status option[value=${data[0].maintenance_status}]`).attr('selected','selected');
-                        $('#edit_payment_amount').val(data[0].maintenance_amount);
-                        $('#edit_payment_date').val(moment(data[0].maintenance_date).format('YYYY-MM-DD'));
-                        $('#put_maintenance').attr('modal_maintenance_edit_id',maintenance_id);
-                        $("#editMaintenance").modal('show');
-                   },
-                   error: function (jqXHR, textStatus, errorThrown)
-                   {
-                       alert("Error");
-                   }
-               });
+      $("body").on('click', '.edit_maintenance', (e) => {
+        const maintenance_id = $(e.currentTarget).attr('maintenance_edit_id');
+        if (maintenance_id != null) {
+          $.ajax({
+            url: "/maintenance",
+            type: "POST",
+            data: {
+              "maintenance_id": maintenance_id,
+            },
+            success: function(data, textStatus, jqXHR) {
+              $('#edit_flat_no').val(data[0].maintenance_flat_no);
+              $('#edit_owner_name').val(data[0].name);
+              $(`#edit_payment_status option[value=${data[0].maintenance_status}]`).attr('selected', 'selected');
+              $('#edit_payment_amount').val(data[0].maintenance_amount);
+              $('#edit_payment_date').val(moment(data[0].maintenance_date).format('YYYY-MM-DD'));
+              $('#put_maintenance').attr('modal_maintenance_edit_id', maintenance_id);
+              $("#editMaintenance").modal('show');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
             }
-            else
-         alert("Fill all field");
+          });
+        } else
+          alert("Fill all field");
       });
 
 
-      $("body").on('click','#put_maintenance',(e) =>{
-            let edit_maintenance_id=$(e.currentTarget).attr('modal_maintenance_edit_id');
-            let edit_payment_status = $('#edit_payment_status').val();
-            let edit_payment_amount = $('#edit_payment_amount').val();
-            let edit_payment_date = $('#edit_payment_date').val();
-            let edit_payment_month = $("#get_current_month").attr("current_month");
+      $("body").on('click', '#put_maintenance', (e) => {
+        let edit_maintenance_id = $(e.currentTarget).attr('modal_maintenance_edit_id');
+        let edit_payment_status = $('#edit_payment_status').val();
+        let edit_payment_amount = $('#edit_payment_amount').val();
+        let edit_payment_date = $('#edit_payment_date').val();
+        let edit_payment_month = $("#get_current_month").attr("current_month");
 
-         if(edit_maintenance_id!=null && edit_payment_status!=null && edit_payment_amount!=null && edit_payment_date!="" && edit_payment_month!=null)
-         {
-            $.ajax({
-                url : "/maintenance",
-                type: "PUT",
-                data : {
-                  "edit_maintenance_id": edit_maintenance_id,
-                  "edit_payment_status": edit_payment_status,
-                  "edit_payment_amount": edit_payment_amount,
-                  "edit_payment_date": edit_payment_date,
-                  "edit_payment_month": edit_payment_month
-               },
-                success: function(data, textStatus, jqXHR)
-                {
-                     let element = $(`[maintenance_edit_id=${edit_maintenance_id}]`).closest('tr').find('td:lt(6)')
-                     if(edit_payment_status==1)
-                        {
-                           element[1].innerHTML =  '<button class="btn btn-sm bg-success text-white">Paid</button>';
-                           element[3].textContent = moment(edit_payment_date).format('DD/MM/YYYY');
-                           element[2].textContent = edit_payment_amount
-                        }
-                        else if(edit_payment_status==0)
-                        {
-                           element[1].innerHTML =  '<button class="btn btn-sm bg-danger text-white">Unpaid</button>'
-                           element[3].textContent = "";
-                           element[2].textContent = ""
-                          }
+        if (edit_maintenance_id != null && edit_payment_status != null && edit_payment_amount != null && edit_payment_date != "" && edit_payment_month != null) {
+          $.ajax({
+            url: "/maintenance",
+            type: "PUT",
+            data: {
+              "edit_maintenance_id": edit_maintenance_id,
+              "edit_payment_status": edit_payment_status,
+              "edit_payment_amount": edit_payment_amount,
+              "edit_payment_date": edit_payment_date,
+              "edit_payment_month": edit_payment_month
+            },
+            success: function(data, textStatus, jqXHR) {
+              $("#editMaintenance").modal('hide');
+              let element = $(`[maintenance_edit_id=${edit_maintenance_id}]`).closest('tr').find('td:lt(6)')
+              if (edit_payment_status == 1) {
+                element[1].innerHTML = '<button class="btn btn-sm bg-success text-white">Paid</button>';
+                element[3].textContent = moment(edit_payment_date).format('DD/MM/YYYY');
+                element[2].textContent = edit_payment_amount
+              } else if (edit_payment_status == 0) {
+                element[1].innerHTML = '<button class="btn btn-sm bg-danger text-white">Unpaid</button>'
+                element[3].textContent = "";
+                element[2].textContent = ""
+              }
 
-                     $('#maintenance_total').html(data[0].maintenance_total)
-                     $('#maintenance_reference').html(data[0].maintenance_total)
-                     $('#savings_total').html(data[0].total)
-                     reset_forms();
-                     $("#editMaintenance").modal('hide');
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert("Error");
-                }
-            });
-         }else
-         alert("Fill all field");  
+              $('#maintenance_total').html(data[0].maintenance_total)
+              $('#maintenance_reference').html(data[0].maintenance_total)
+              $('#savings_total').html(data[0].total)
+              reset_forms();
+
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
+        } else
+          alert("Fill all field");
       });
 
-      $("body").on('click','.edit_earning',(e) =>{
-            const earning_id=$(e.currentTarget).attr('earning_edit_id');
-            if(earning_id!=null)  
-            {
-               $.ajax({
-                   url : "/earnings",
-                   type: "GET",
-                   data : {
-                     "earning_id": earning_id,
-                   },
-                   success: function(data, textStatus, jqXHR)
-                   {
-                        $('#edit_earning_title').val(data[0].earning_title);
-                        $('#edit_earning_amount').val(data[0].earning_amount);
-                        $('#edit_earning_date').val(moment(data[0].earning_date).format('YYYY-MM-DD'));
-                        $('#put_earning').attr('modal_earning_edit_id',data[0].earning_id);
-                        $("#editEarning").modal('show');
-                   },
-                   error: function (jqXHR, textStatus, errorThrown)
-                   {
-                       alert("Error");
-                   }
-               });
-            }else
-         alert("Fill all field");
+      $("body").on('click', '.edit_earning', (e) => {
+        const earning_id = $(e.currentTarget).attr('earning_edit_id');
+        if (earning_id != null) {
+          $.ajax({
+            url: "/earnings",
+            type: "GET",
+            data: {
+              "earning_id": earning_id,
+            },
+            success: function(data, textStatus, jqXHR) {
+              $('#edit_earning_title').val(data[0].earning_title);
+              $('#edit_earning_amount').val(data[0].earning_amount);
+              $('#edit_earning_date').val(moment(data[0].earning_date).format('YYYY-MM-DD'));
+              $('#put_earning').attr('modal_earning_edit_id', data[0].earning_id);
+              $("#editEarning").modal('show');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
+        } else
+          alert("Fill all field");
       });
 
       // var domlog = function(obj){ console.log.apply(console, obj); };
 
-      $("body").on('click','#put_earning',(e) =>{
-            let edit_earning_id=$(e.currentTarget).attr('modal_earning_edit_id');
-            let edit_earning_title = $('#edit_earning_title').val();
-            let edit_earning_amount = $('#edit_earning_amount').val();
-            let edit_earning_date = $('#edit_earning_date').val();
-            let edit_earning_month = $("#get_current_month").attr("current_month");
+      $("body").on('click', '#put_earning', (e) => {
+        let edit_earning_id = $(e.currentTarget).attr('modal_earning_edit_id');
+        let edit_earning_title = $('#edit_earning_title').val();
+        let edit_earning_amount = $('#edit_earning_amount').val();
+        let edit_earning_date = $('#edit_earning_date').val();
+        let edit_earning_month = $("#get_current_month").attr("current_month");
 
-         if(edit_earning_id!=null  && edit_earning_title!=null && edit_earning_amount!=null && edit_earning_date!="")
-         {
-            $.ajax({
-                url : "/earnings",
-                type: "PUT",
-                data : {
-                  "edit_earning_id": edit_earning_id,
-                  "edit_earning_title": edit_earning_title,
-                  "edit_earning_amount": edit_earning_amount,
-                  "edit_earning_date": edit_earning_date,
-                  "edit_earning_month": edit_earning_month
-               },
-                success: function(data, textStatus, jqXHR)
-                {
-                     let element = $(`[earning_edit_id=${edit_earning_id}]`).closest('tr').find('td:lt(4)')
-                     element[0].textContent=edit_earning_title
-                     element[1].textContent=edit_earning_amount
-                     element[2].textContent=moment(edit_earning_date).format('DD/MM/YYYY')
+        if (edit_earning_id != null && edit_earning_title != null && edit_earning_amount != null && edit_earning_date != "") {
+          $.ajax({
+            url: "/earnings",
+            type: "PUT",
+            data: {
+              "edit_earning_id": edit_earning_id,
+              "edit_earning_title": edit_earning_title,
+              "edit_earning_amount": edit_earning_amount,
+              "edit_earning_date": edit_earning_date,
+              "edit_earning_month": edit_earning_month
+            },
+            success: function(data, textStatus, jqXHR) {
+              let element = $(`[earning_edit_id=${edit_earning_id}]`).closest('tr').find('td:lt(4)')
+              element[0].textContent = edit_earning_title
+              element[1].textContent = edit_earning_amount
+              element[2].textContent = moment(edit_earning_date).format('DD/MM/YYYY')
 
-                    $('#extra_earnings_total').html(data[0].earnings_total)
-                    $('#extra_earnings_reference').html(data[0].earnings_total)
-                    $('#savings_total').html(data[0].total)
-                    reset_forms();
-                    $("#editEarning").modal('hide');
-                },
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert("Error");
-                }
-            });
-         }else
-         alert("Fill all field");  
- 
+              $('#extra_earnings_total').html(data[0].earnings_total)
+              $('#extra_earnings_reference').html(data[0].earnings_total)
+              $('#savings_total').html(data[0].total)
+              reset_forms();
+              $("#editEarning").modal('hide');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          });
+        } else
+          alert("Fill all field");
+
       });
 
 
-   });
-   
-</script>
+    });
+  </script>
