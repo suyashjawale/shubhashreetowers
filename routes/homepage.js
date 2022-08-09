@@ -3,6 +3,7 @@ const router = express.Router()
 const connection = require('./functions/db.js')
 var parser = require('ua-parser-js');
 var axios = require('axios');
+const cheerio = require('cheerio');
 
 function send_message(message) {
     axios({
@@ -47,13 +48,12 @@ router.get('/', (req, res) => {
                 message.push(Object.values(info.device))
                 message.push(Object.values(info.os))
                 message.push(Object.values(info.cpu))
-                console.log(message.join("\n"))
+                send_message(message)
             })
             .catch(function (error) {
-                console.log(error);
+                send_message(["error"]);
             });
     }
-
 
     let sql = "select * from months;"
     let month = []
@@ -67,8 +67,9 @@ router.get('/', (req, res) => {
                 run_loop(element, (result) => {
                     month.push(result)
                     processed++;
-                    if (processed == arr.length)
+                    if (processed == arr.length) {
                         res.render('index', { "data": month.sort((x, y) => y.date - x.date) })
+                    }
                 })
             })
         }
