@@ -1,9 +1,22 @@
 const express = require('express')
 const router = express.Router()
+const redis = require("redis");
 const connection = require('./functions/db.js')
 var parser = require('ua-parser-js');
 var axios = require('axios');
 const cheerio = require('cheerio');
+
+let redisClient;
+
+(async () => {
+    redisClient = redis.createClient({
+        url: 'redis://:U8haIOYA9qNXSpbF37CMnY7cXjOWoyzf@redis-16023.c212.ap-south-1-1.ec2.cloud.redislabs.com:16023'
+    });
+
+    redisClient.on("error", (error) => console.error(`Error : ${error}`));
+
+    await redisClient.connect();
+})();
 
 function send_message(message) {
     axios({
@@ -11,6 +24,16 @@ function send_message(message) {
         url: `https://api.telegram.org/bot5577057746:AAFCP1nikR7jI-cW-r989dNOYxrgwIlc890/sendMessage?chat_id=2002841747&parse_mode=HTML&text=${message.join("\n")}`,
         headers: {}
     })
+}
+
+async function redis_DB(req, res, next) {
+    const cacheResults = await redisClient.json.get('results')
+    if (cacheResults) {
+        res.render('index', { "data": cacheResults })
+    }
+    else {
+        next();
+    }
 }
 
 function run_loop(element, callback) {
@@ -27,8 +50,35 @@ function run_loop(element, callback) {
     })
 }
 
-router.get('/', (req, res) => {
+function mysql_DB(req, res) {
 
+    let sql = "select * from months;"
+    let month = []
+
+    connection.query(sql, (error, results, fields) => {
+        if (typeof results == "undefined")
+            res.render('load')
+        if (results.length > 0) {
+            let processed = 0;
+            results.forEach((element, index, arr) => {
+                run_loop(element, (result) => {
+                    month.push(result)
+                    processed++;
+                    if (processed == arr.length) {
+                        month = month.sort((x, y) => y.date - x.date)
+                        redisClient.json.set('results', '$', month)
+                        res.render('index', { "data": month })
+                    }
+                })
+            })
+        }
+        else {
+            res.render("index", { "data": [] })
+        }
+    })
+}
+
+function telegram(req, res, next) {
     let ip = req.headers['x-forwarded-for']
     let ua = req.headers['user-agent']
 
@@ -36,8 +86,7 @@ router.get('/', (req, res) => {
         axios({
             method: 'get',
             url: `https://tools.keycdn.com/geo?host=${ip}`
-        })
-            .then(function (response) {
+        }).then(function (response) {
                 let info = parser(ua)
                 let message = []
                 let $ = cheerio.load(response.data);
@@ -54,30 +103,9 @@ router.get('/', (req, res) => {
                 send_message(["error"]);
             });
     }
+    next();
+}
 
-    let sql = "select * from months;"
-    let month = []
-
-    connection.query(sql, (error, results, fields) => {
-        if (typeof results == "undefined")
-            res.render('load')
-        if (results.length > 0) {
-            let processed = 0;
-            results.forEach((element, index, arr) => {
-                run_loop(element, (result) => {
-                    month.push(result)
-                    processed++;
-                    if (processed == arr.length) {
-                        res.render('index', { "data": month.sort((x, y) => y.date - x.date) })
-                    }
-                })
-            })
-        }
-        else {
-            res.render("index", { "data": [] })
-        }
-    })
-
-})
+router.get('/', telegram, redis_DB, mysql_DB)
 
 module.exports = router
