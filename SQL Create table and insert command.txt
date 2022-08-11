@@ -1,0 +1,113 @@
+
+drop table arrears, expenses,savings,earnings,fine,maintenance,months,members;
+
+create table members(flat_no int unsigned not null primary key,name varchar(25) not null, mobile_number varchar(12) not null);
+
+create table months(month_id varchar(15) not null primary key, month_name varchar(20) not null, previous_month_id varchar(15) not null, created_date datetime not null,latest tinyint(1) not null);
+
+create table maintenance(maintenance_id int unsigned not null auto_increment primary key, maintenance_flat_no int unsigned not null,maintenance_month_id varchar(15) not null,maintenance_status tinyint(1) unsigned not null, maintenance_amount int unsigned not null, maintenance_date datetime not null, foreign key(maintenance_flat_no) references members(flat_no), foreign key(maintenance_month_id) references months(month_id));
+
+create table fine(fine_id int unsigned not null auto_increment primary key, fine_flat_no int unsigned not null,fine_month_id varchar(15) not null,fine_status tinyint(1) unsigned not null, fine_amount int unsigned not null, fine_date datetime not null, foreign key(fine_flat_no) references members(flat_no), foreign key(fine_month_id) references months(month_id));
+
+create table earnings(earning_id int unsigned not null auto_increment primary key, earning_month varchar(15) not null, earning_title text not null, earning_amount int unsigned not null,earning_date datetime not null, earning_photo varchar(50) not null, foreign key(earning_month) references months(month_id));
+
+create table expenses(expense_id int unsigned not null auto_increment primary key, expense_month varchar(15) not null, expense_title text not null, expense_amount int unsigned not null,expense_date datetime not null, expense_photo varchar(50) not null, foreign key(expense_month) references months(month_id));
+
+create table savings(saving_month_id varchar(15) not null, maintenance_total int not null, fine_total int not null, previous_month_total int not null,expenses_total int not null, earnings_total int not null, total int not null, note text,foreign key(saving_month_id) references months(month_id));
+
+create table arrears(arrears_amount int not null, previous_arrears int not null, arrears_month_id varchar(15) not null, foreign key(arrears_month_id) references months(month_id));
+
+create table visitors(visitor_id varchar(21) not null primary key,ip varchar(40),visit_count int not null,last_visit datetime not null);
+
+insert into members values(1,'Pramila Bhor','');
+insert into members values(2,'Akshay Jaygude','7276728747');
+insert into members values(3,'Rajesh Ghule','7350424293');
+insert into members values(4,'Jayram Poojari','9356225756');
+insert into members values(5,'Chandrakant Joshi','9890644038');
+insert into members values(6,'M.R Kashyap','9158683545');
+insert into members values(7,'Kalpana Kulkarni','9370210740');
+insert into members values(8,'Kalpana Kulkarni','9370210740');
+insert into members values(9,'Sanjay Jawale','9923897154');
+insert into members values(10,'Rajendra Pawar','');
+insert into members values(11,'Suhas Dhumal','9689838547');
+insert into members values(12,'Umesh Prajapati','9049004225');
+insert into members values(13,'Sudhakar Shetty','9823307790');
+insert into members values(14,'Shubhangi Sonawane','9762051999');
+insert into members values(15,'Shubhangi Sonawane','9762051999');
+insert into members values(16,'Anuja Joshi','90288759593');
+insert into members values(17,'Suresh Chaudhari','9850948283');
+insert into members values(18,'Suresh Chaudhari','9850948283');
+
+insert into months values('contrib2000','Contribution 2000','None','2022-04-03',1);
+insert into months values('may2022','May 2022','None','2022-04-03',0);
+insert into months values('june2022','June 2022','None','2022-04-03',0);
+insert into months values('july2022','July 2022','None','2022-04-03',0);
+
+
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(1,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(2,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(3,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(4,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(5,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(6,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(7,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(8,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(9,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(10,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(11,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(12,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(13,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(14,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(15,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(16,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(17,'contrib2000',1,2000,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(18,'contrib2000',1,2000,'2022-04-03');
+
+
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(1,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(2,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(3,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(4,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(5,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(6,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(7,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(8,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(9,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(10,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(11,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(12,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(13,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(14,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(15,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(16,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(17,'may2022',1,400,'2022-04-03');
+insert into maintenance (maintenance_flat_no,maintenance_month_id,maintenance_status,maintenance_amount,maintenance_date) values(18,'may2022',1,400,'2022-04-03');
+
+
+insert into fine (fine_flat_no,fine_month_id,fine_status,fine_amount,fine_date) values(12,'contrib2000',1,400,'2022-04-03');
+insert into fine (fine_flat_no,fine_month_id,fine_status,fine_amount,fine_date) values(13,'contrib2000',1,400,'2022-04-03');
+insert into fine (fine_flat_no,fine_month_id,fine_status,fine_amount,fine_date) values(14,'contrib2000',1,400,'2022-04-03');
+insert into fine (fine_flat_no,fine_month_id,fine_status,fine_amount,fine_date) values(15,'may2022',1,400,'2022-04-03');
+insert into fine (fine_flat_no,fine_month_id,fine_status,fine_amount,fine_date) values(16,'may2022',1,400,'2022-04-03');
+insert into fine (fine_flat_no,fine_month_id,fine_status,fine_amount,fine_date) values(17,'may2022',1,400,'2022-04-03');
+insert into fine (fine_flat_no,fine_month_id,fine_status,fine_amount,fine_date) values(18,'may2022',1,400,'2022-04-03');
+
+
+insert into expenses (expense_month, expense_title, expense_amount,expense_date, expense_photo) values ('june2022','Bhaiya Salary -  Duration 1 may 2022 to 30 May 2022',2400,'2022-06-1','None');
+insert into expenses (expense_month, expense_title, expense_amount,expense_date, expense_photo) values ('june2022','Light Bill',2600,'2022-06-27','None');
+insert into expenses (expense_month, expense_title, expense_amount,expense_date, expense_photo) values ('june2022','Kharata',80,'2022-06-15','None');
+
+
+insert into earnings (earning_month, earning_title, earning_amount,earning_date, earning_photo) values ('june2022','scrap parking ',1000,'2022-06-3','None');
+
+insert into earnings (earning_month, earning_title, earning_amount,earning_date, earning_photo) values ('may2022','Deshmukh kaka',1000,'2022-05-5','None');
+
+insert into savings values('contrib2000',6100,200,2000,1000,1000,10,'demo test');
+
+insert into savings values('june2022',6100,200,2000,1000,1000,10,'demo test');
+
+insert into savings values('may2022',6100,200,2000,1000,1000,10,'demo test');
+
+insert into savings values('july2022',6100,200,2000,1000,1000,10,'demo test');
+
+
