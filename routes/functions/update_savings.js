@@ -1,4 +1,5 @@
 const connection = require('./db.js')
+const execute_redis = require('./redis.js')
 
 function update_total(arg_month,callback){
  
@@ -24,6 +25,7 @@ function update_total(arg_month,callback){
         query+=`select * from savings where saving_month_id= ${connection.escape(arg_month)};`
         
         connection.query(query,(error, results, fields)=>{
+            execute_redis("JSON.DEL",["results", "$"])
             callback(results.at(-1),error)
         })
     })
