@@ -52,30 +52,38 @@ function run_loop(element, callback) {
 
 function mysql_DB(req, res) {
 
-    let sql = "select * from months;"
-    let month = []
+    try
+    {
+        let sql = "select * from months;"
+        let month = []
 
-    connection.query(sql, (error, results, fields) => {
-        if (typeof results == "undefined")
-            res.render('load')
-        if (results.length > 0) {
-            let processed = 0;
-            results.forEach((element, index, arr) => {
-                run_loop(element, (result) => {
-                    month.push(result)
-                    processed++;
-                    if (processed == arr.length) {
-                        month = month.sort((x, y) => y.date - x.date)
-                        redisClient.json.set('results', '$', month)
-                        res.render('index', { "data": month })
-                    }
+        connection.query(sql, (error, results, fields) => {
+            if (typeof results == "undefined")
+                res.render('load')
+            if (results.length > 0) {
+                let processed = 0;
+                results.forEach((element, index, arr) => {
+                    run_loop(element, (result) => {
+                        month.push(result)
+                        processed++;
+                        if (processed == arr.length) {
+                            month = month.sort((x, y) => y.date - x.date)
+                            redisClient.json.set('results', '$', month)
+                            res.render('index', { "data": month })
+                        }
+                    })
                 })
-            })
-        }
-        else {
-            res.render("index", { "data": [] })
-        }
-    })
+            }
+            else {
+                res.render("index", { "data": [] })
+            }
+        })
+    }
+    catch(e)
+    {
+        send_message("Bro site has crashed");        
+        res.send("OOPS, site crashed. ")
+    }
 }
 
 function telegram(req, res, next) {
