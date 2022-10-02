@@ -1,7 +1,6 @@
 const express = require('express')
 const session = require('express-session');
 const bodyParser = require('body-parser');
-
 const homeRoute = require('./routes/homepage')
 const adminRoute = require('./routes/admin')
 const authenticationRoute = require('./routes/authenticate')
