@@ -52,15 +52,10 @@ function run_loop(element, callback) {
 
 function mysql_DB(req, res) {
 
-    try
-    {
-        let sql = "select * from months;"
+    let sql = "select * from months;"
         let month = []
-
         connection.query(sql, (error, results, fields) => {
-            if (typeof results == "undefined")
-                res.render('load')
-            if (results.length > 0) {
+
                 let processed = 0;
                 results.forEach((element, index, arr) => {
                     run_loop(element, (result) => {
@@ -73,20 +68,12 @@ function mysql_DB(req, res) {
                         }
                     })
                 })
-            }
-            else {
-                res.render("index", { "data": [] })
-            }
-        })
-    }
-    catch(e)
-    {
-        send_message("Bro site has crashed");        
-        res.send("OOPS, site crashed. ")
-    }
+
+        })    
 }
 
 function telegram(req, res, next) {
+
     let ip = req.headers['x-forwarded-for']
     let ua = req.headers['user-agent']
 
