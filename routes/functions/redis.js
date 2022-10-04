@@ -6,7 +6,7 @@ async function executeRedis(query,args) {
       const results = await redis.call(query,args);
       await redis.quit();
   } catch (error) {
-      return { error };
+      console.log(error);
   }
 }
 

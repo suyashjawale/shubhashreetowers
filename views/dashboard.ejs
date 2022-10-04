@@ -69,6 +69,7 @@
       <button class="btn btn-sm bg-success text-white print" target_div="<%= maintenance[0].month_id %>">Download</button>
       <%}%>
             <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addMonth">Add Month</button>
+            <button class="btn btn-primary btn-sm" id="push_to_redis">Push to Redis</button>
             </div>
         
          <% if(maintenance.length>0){ %>
@@ -471,6 +472,22 @@
           });
         } else
           alert("Fill all field");
+      });
+
+      $("body").on('click', '#push_to_redis', (e) => {
+
+        console.log("clicked");
+          $.ajax({
+            url: "/update_redis",
+            type: "GET",
+            success: function(data, textStatus, jqXHR) {
+              alert("Success");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              alert("Error");
+            }
+          })
+
       });
 
 

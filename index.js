@@ -9,6 +9,7 @@ const maintenanceRoute = require('./routes/maintenance')
 const earningsRoute = require('./routes/earnings')
 const expensesRoute = require('./routes/expenses')
 const noteRoute = require('./routes/note')
+const redis_route = require('./routes/update_redis')
 
 const app = express()
 const port = process.env.PORT ||3000;
@@ -36,6 +37,7 @@ app.use('/maintenance',maintenanceRoute)
 app.use('/earnings',earningsRoute)
 app.use('/expenses',expensesRoute)
 app.use('/note',noteRoute)
+app.use('/update_redis',redis_route)
 
 app.listen(port, () => {
   console.log(`Server listening ${port}`)

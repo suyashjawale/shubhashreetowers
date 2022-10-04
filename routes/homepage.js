@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 const redis = require("redis");
-const connection = require('./functions/db.js')
 var parser = require('ua-parser-js');
 var axios = require('axios');
 const cheerio = require('cheerio');
@@ -36,42 +35,6 @@ async function redis_DB(req, res, next) {
     }
 }
 
-function run_loop(element, callback) {
-    let sql = `select m.*,name from maintenance m, members me where m.maintenance_flat_no=me.flat_no and maintenance_month_id= ${connection.escape(element.month_id)}; select * from earnings where earning_month=${connection.escape(element.month_id)}; select * from expenses where expense_month=${connection.escape(element.month_id)}; select * from savings where saving_month_id=${connection.escape(element.month_id)}; select created_date from months where month_id = ${connection.escape(element.month_id)}`
-
-    let month = { key: element.month_id, month_name: element.month_name }
-    connection.query(sql, (err, result, fields) => {
-        month.maintenance = result[0];
-        month.earnings = result[1];
-        month.expenses = result[2];
-        month.savings = result[3][0];
-        month.date = result[4][0]['created_date'];
-        callback(month)
-    })
-}
-
-function mysql_DB(req, res) {
-
-    let sql = "select * from months;"
-        let month = []
-        connection.query(sql, (error, results, fields) => {
-
-                let processed = 0;
-                results.forEach((element, index, arr) => {
-                    run_loop(element, (result) => {
-                        month.push(result)
-                        processed++;
-                        if (processed == arr.length) {
-                            month = month.sort((x, y) => y.date - x.date)
-                            redisClient.json.set('results', '$', month)
-                            res.render('index', { "data": month })
-                        }
-                    })
-                })
-
-        })    
-}
-
 function telegram(req, res, next) {
 
     let ip = req.headers['x-forwarded-for']
@@ -101,6 +64,6 @@ function telegram(req, res, next) {
     next();
 }
 
-router.get('/', telegram, redis_DB, mysql_DB)
+router.get('/', telegram, redis_DB)
 
 module.exports = router
