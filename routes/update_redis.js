@@ -62,7 +62,7 @@ router.get("/",auth,async (req,res)=>{
         processed++;
         if (processed == arr.length) {
             month = month.sort((x, y) => y.date - x.date)
-            // redisClient.json.set('results', '$', month)
+            redisClient.json.set('results', '$', month)
             res.status(200).send("ok");
         }
     })
