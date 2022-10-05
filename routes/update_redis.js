@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const connection = require('./functions/db.js')
 const auth = require('./functions/auth.js')
 const redis = require("redis");
+
 let redisClient;
 
 (async () => {
@@ -16,42 +16,74 @@ let redisClient;
 })();
 
 
-function run_loop(element, callback) {
-    let sql = `select m.*,name from maintenance m, members me where m.maintenance_flat_no=me.flat_no and maintenance_month_id= ${connection.escape(element.month_id)}; select * from earnings where earning_month=${connection.escape(element.month_id)}; select * from expenses where expense_month=${connection.escape(element.month_id)}; select * from savings where saving_month_id=${connection.escape(element.month_id)}; select created_date from months where month_id = ${connection.escape(element.month_id)}`
+const mysql = require('mysql2/promise');
 
-    let month = { key: element.month_id, month_name: element.month_name }
-    connection.query(sql, (err, result, fields) => {
-        month.maintenance = result[0];
-        month.earnings = result[1];
-        month.expenses = result[2];
-        month.savings = result[3][0];
-        month.date = result[4][0]['created_date'];
-        callback(month)
-    })
+let connection;
+
+(async () => {
+    connection = await mysql.createConnection({
+        host: 'us-cdbr-east-06.cleardb.net',
+        user: 'b1d16b7d5443dc',
+        password: '8f04af86',
+        database: 'heroku_231d0204ca36e60'
+    });
+})();
+
+async function getInfo(query,values){  
+    const [rows, fields] = await connection.execute(query,values);
+    return rows;
 }
 
+router.get("/",auth,async (req,res)=>{
 
-router.get("/",auth,(req,res)=>{
-    console.log("hey bro")
+    let results = await getInfo("select * from months",[]);
+    let month=[]
 
-    let sql = "select * from months;"
-    let month = []
-    connection.query(sql, (error, results, fields) => {
-
-            let processed = 0;
-            results.forEach((element, index, arr) => {
-                run_loop(element, (result) => {
-                    month.push(result)
-                    processed++;
-                    if (processed == arr.length) {
-                        month = month.sort((x, y) => y.date - x.date)
-                        redisClient.json.set('results', '$', month)
-                        res.status(200).send("ok");      
-                    }
-                })
-            })
+    let processed = 0;
+    results.forEach( async (element, index, arr) => {
+        let month_id = element.month_id;
+        let month_name = element.month_name;
+        let maintenance = await getInfo('select m.*,name from maintenance m, members me where m.maintenance_flat_no=me.flat_no and maintenance_month_id = ?',[element.month_id]);
+        let earnings = await getInfo('select * from earnings where earning_month= ? ',[element.month_id])
+        let expenses = await getInfo('select * from expenses where expense_month= ? ',[element.month_id])
+        let savings = await getInfo('select * from savings where saving_month_id= ?',[element.month_id])
+        let date = await getInfo('select created_date from months where month_id = ?',[element.month_id])
+        
+        month.push({
+            key : month_id,
+            month_name : month_name,
+            maintenance : maintenance,
+            earnings : earnings,
+            expenses : expenses,
+            savings : savings[0],
+            date : date[0]['created_date']
+        })
+      
+        processed++;
+        if (processed == arr.length) {
+            month = month.sort((x, y) => y.date - x.date)
+            // redisClient.json.set('results', '$', month)
+            res.status(200).send("ok");
+        }
     })
 
 })
 
 module.exports = router
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const connection = require('./functions/db.js')
+const mysql = require('mysql')
 const auth = require('./functions/auth.js')
 const update_total= require('./functions/update_savings.js')
 
@@ -8,10 +8,17 @@ const update_total= require('./functions/update_savings.js')
 router.post('/', auth,(req, res) => {
 
     const maintenance_id = req.body.maintenance_id;
-
+    let connection = mysql.createConnection({
+        host: 'us-cdbr-east-06.cleardb.net',
+        user: 'b1d16b7d5443dc',
+        password: '8f04af86',
+        database: 'heroku_231d0204ca36e60',
+        multipleStatements: true
+    })
     let sql = `select maintenance_id,maintenance_flat_no,name,maintenance_status,maintenance_amount,maintenance_date from maintenance m , members me where m.maintenance_flat_no=me.flat_no and maintenance_id=${connection.escape(maintenance_id)};`
 
     connection.query(sql, (error, results, fields) => {
+        connection.end();
         res.status(200).send(results);
     })
 })
@@ -24,6 +31,14 @@ router.put('/', auth,(req, res) =>{
     const edit_payment_date = req.body.edit_payment_date;
     const edit_payment_month = req.body.edit_payment_month;
     
+    let connection = mysql.createConnection({
+        host: 'us-cdbr-east-06.cleardb.net',
+        user: 'b1d16b7d5443dc',
+        password: '8f04af86',
+        database: 'heroku_231d0204ca36e60',
+        multipleStatements: true
+    })
+
     if(edit_maintenance_id!=null && edit_payment_status!=null && edit_payment_amount!=null && edit_payment_date!=null && edit_payment_month!=null)
     {
         let sql1 = `update maintenance set maintenance_status=${connection.escape(edit_payment_status)},maintenance_amount=${connection.escape(edit_payment_amount)},maintenance_date=${connection.escape(edit_payment_date)} where maintenance_id=${connection.escape(edit_maintenance_id)};`;
@@ -40,6 +55,7 @@ router.put('/', auth,(req, res) =>{
             else
             {   
                 update_total(edit_payment_month,(result)=>{
+                    connection.end();
                     res.status(200).send(result);
                 })
             }

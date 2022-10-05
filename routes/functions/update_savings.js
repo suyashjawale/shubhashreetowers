@@ -1,9 +1,15 @@
-const connection = require('./db.js')
-
+const mysql = require('mysql')
 
 function update_total(arg_month,callback){
  
     let sql= "select saving_month_id,previous_month_id,maintenance_total,previous_month_total,expenses_total,earnings_total,total from savings s,months m where s.saving_month_id=m.month_id order by created_date;"
+    let connection = mysql.createConnection({
+        host: 'us-cdbr-east-06.cleardb.net',
+        user: 'b1d16b7d5443dc',
+        password: '8f04af86',
+        database: 'heroku_231d0204ca36e60',
+        multipleStatements: true
+    })
 
     connection.query(sql, (error, results, fields) => {
         let query = ""
@@ -25,6 +31,7 @@ function update_total(arg_month,callback){
         query+=`select * from savings where saving_month_id= ${connection.escape(arg_month)};`
         
         connection.query(query,(error, results, fields)=>{
+            connection.end()
             callback(results.at(-1),error)
         })
     })

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const connection = require('./functions/db.js')
+const mysql = require('mysql')
 const auth = require('./functions/auth.js')
 const capitalize = require('./functions/capitalize.js')
 const update_total= require('./functions/update_savings.js')
@@ -12,6 +12,13 @@ router.post('/',auth, (req, res) => {
     const date = new Date();
     const insert_month_previous = req.body.insert_month_previous.toLowerCase();
     const insert_month_latest = req.body.insert_month_latest;
+    let connection = mysql.createConnection({
+        host: 'us-cdbr-east-06.cleardb.net',
+        user: 'b1d16b7d5443dc',
+        password: '8f04af86',
+        database: 'heroku_231d0204ca36e60',
+        multipleStatements: true
+    })
 
     let modify_latest = ""
     if (insert_month_latest == "1")
@@ -29,6 +36,7 @@ router.post('/',auth, (req, res) => {
         update_total(null,(result,status)=>{
             if (status)
                 res.sendStatus(500)
+            connection.end();
             res.sendStatus(200);
         })
     })

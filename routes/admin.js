@@ -1,11 +1,19 @@
 const express = require('express')
-const connection = require('./functions/db.js')
+const mysql = require('mysql')
 const auth = require('./functions/auth.js')
 const router = express.Router()
 
 router.get('/', auth,(req, res) => {
+    
+    let connection = mysql.createConnection({
+        host: 'us-cdbr-east-06.cleardb.net',
+        user: 'b1d16b7d5443dc',
+        password: '8f04af86',
+        database: 'heroku_231d0204ca36e60',
+        multipleStatements: true
+    })
+    
     const month = req.query.month;
-
     let query = "latest=1;"
 
     if (typeof month != 'undefined')
@@ -24,6 +32,7 @@ router.get('/', auth,(req, res) => {
     let sql = sql1 + sql2 + sql3 + sql4 + sql5
 
     connection.query(sql, (error, results, fields) => {
+        console.log(error);        
         res.render('dashboard',{
             "months_list": results[0],
             "maintenance": results[1],
@@ -31,6 +40,7 @@ router.get('/', auth,(req, res) => {
             "expenses": results[3],
             "savings": results[4]
         })
+        connection.end();
     })
 })
 
