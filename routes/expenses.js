@@ -11,10 +11,10 @@ router.post('/', auth, (req, res) => {
     const insert_expense_date = req.body.insert_expense_date;
     const insert_expense_month = req.body.insert_expense_month.toLowerCase().trim();
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
 
@@ -43,10 +43,10 @@ router.post('/', auth, (req, res) => {
 router.get('/', auth, (req, res) => {
     const expense_id = req.query.expense_id;
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
     let sql = `select * from expenses where expense_id= ${connection.escape(expense_id)}`
@@ -66,10 +66,10 @@ router.put('/', auth, function (req, res) {
     const edit_expense_date = req.body.edit_expense_date;
     const edit_expense_month = req.body.edit_expense_month;
     const connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
 
@@ -99,10 +99,10 @@ router.delete('/', auth, (req, res) => {
     const delete_expense_id = req.body.delete_expense_id;
     const delete_expense_month = req.body.delete_expense_month;
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
     let sql1 = `delete from expenses where expense_id= ${connection.escape(delete_expense_id)};`

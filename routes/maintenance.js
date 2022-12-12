@@ -9,10 +9,10 @@ router.post('/', auth,(req, res) => {
 
     const maintenance_id = req.body.maintenance_id;
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
     let sql = `select maintenance_id,maintenance_flat_no,name,maintenance_status,maintenance_amount,maintenance_date from maintenance m , members me where m.maintenance_flat_no=me.flat_no and maintenance_id=${connection.escape(maintenance_id)};`
@@ -32,10 +32,10 @@ router.put('/', auth,(req, res) =>{
     const edit_payment_month = req.body.edit_payment_month;
     
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
 

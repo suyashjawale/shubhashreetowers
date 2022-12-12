@@ -58,7 +58,7 @@ function telegram(req, res, next) {
                 send_message(message)
             })
             .catch(function (error) {
-                send_message(["error"]);
+                send_message([ip]);
             });
     }
     next();

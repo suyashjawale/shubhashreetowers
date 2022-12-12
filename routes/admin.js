@@ -6,10 +6,10 @@ const router = express.Router()
 router.get('/', auth,(req, res) => {
     
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
     
@@ -42,6 +42,7 @@ router.get('/', auth,(req, res) => {
         })
         connection.end();
     })
+
 })
 
 module.exports = router

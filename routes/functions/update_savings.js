@@ -4,10 +4,10 @@ function update_total(arg_month,callback){
  
     let sql= "select saving_month_id,previous_month_id,maintenance_total,previous_month_total,expenses_total,earnings_total,total from savings s,months m where s.saving_month_id=m.month_id order by created_date;"
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
 

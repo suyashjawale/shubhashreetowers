@@ -12,10 +12,10 @@ router.post('/', auth, (req, res) => {
     const insert_earnings_date = req.body.insert_earnings_date;
     const insert_earnings_month = req.body.insert_earnings_month.toLowerCase().trim();
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
 
@@ -43,10 +43,10 @@ router.post('/', auth, (req, res) => {
 
 router.get('/', auth, (req, res) => {
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
 
@@ -69,10 +69,10 @@ router.put('/', auth, function (req, res) {
     const edit_earning_date = req.body.edit_earning_date;
     const edit_earning_month = req.body.edit_earning_month.toLowerCase().trim();
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
 
@@ -100,10 +100,10 @@ router.delete('/',auth, (req, res) => {
     const delete_earning_id = req.body.delete_earning_id;
     const delete_month = req.body.delete_month;
     let connection = mysql.createConnection({
-        host: 'us-cdbr-east-06.cleardb.net',
-        user: 'b1d16b7d5443dc',
-        password: '8f04af86',
-        database: 'heroku_231d0204ca36e60',
+        user: 'root',
+        password: 'suyash',
+        database: 'building',
+        port: 3306,
         multipleStatements: true
     })
 
