@@ -1,0 +1,5 @@
+C:\Program Files\MySQL\MySQL Server 8.0\bin>
+
+change file name
+
+Command - mysqldump -u root -p -P 3306 building > C:\Users\Suyash\Desktop\11-March-2023.sql
