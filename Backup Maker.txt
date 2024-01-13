@@ -1,5 +1,3 @@
-C:\Program Files\MySQL\MySQL Server 8.0\bin>
-
 open cmd as administrator
 
 change file name
@@ -7,3 +5,24 @@ change file name
 cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
 
 Command - mysqldump -u root -p -P 3306 building > C:\Users\Suyash\Desktop\shubhashreetowers\16-april-2023.sql
+
+
+_________________________________________________
+
+Upload .sql file to local db
+
+open mysql command line client and add - create database building;
+
+open cmd as administrator
+
+change file name
+
+cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
+
+mysql -h localhost -p -u root -P 3306 building < C:\Users\Suyash\Desktop\shubhashreetowers\23-june-2023.sql
+
+______________________________________________
+
+Troubleshoot
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'suyash';
