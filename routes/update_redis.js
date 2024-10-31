@@ -6,15 +6,15 @@ const moment = require('moment');
 
 let redisClient;
 
-(async () => {
-    redisClient = redis.createClient({
-        url: 'redis://:U8haIOYA9qNXSpbF37CMnY7cXjOWoyzf@redis-16023.c212.ap-south-1-1.ec2.cloud.redislabs.com:16023'
-    });
+// (async () => {
+//     redisClient = redis.createClient({
+//         url: 'redis://:LqZu6ToMpLEz3oKhMck9fXnFHiLW2F0x@redis-17595.c212.ap-south-1-1.ec2.cloud.redislabs.com:17595'
+//     });
 
-    redisClient.on("error", (error) => console.error(`Error : ${error}`));
+//     redisClient.on("error", (error) => console.error(`Error : ${error}`));
 
-    await redisClient.connect();
-})();
+//     await redisClient.connect();
+// })();
 
 
 const mysql = require('mysql2/promise');
