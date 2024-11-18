@@ -1,0 +1,126 @@
+import { Component } from '@angular/core';
+import { GoogleTranslateComponent } from "./google-translate/google-translate.component";
+import { FetchdataService } from './fetchdata.service';
+
+@Component({
+	selector: 'app-root',
+	standalone: true,
+	imports: [GoogleTranslateComponent],
+	template: `
+    <button (click)="downloadImage()">Download JSON as Image</button>
+  `
+})
+
+
+export class AppComponent {
+	jsonData: {
+		flatno: string,
+		name: string,
+		amount: number,
+		status: string,
+		date: string
+	}[] = [
+			{ flatno: '1', name: 'John Doe John DoeJohn DoeJohn DoeJohn DoeJohn Doe', amount: 25, status: 'Unpaid', date: '2023-10-01' },
+			{ flatno: '2', name: 'Jane Smith', amount: 30, status: 'Paid', date: '2023-10-02' }
+		];
+
+	downloadImage() {
+		const svgMarkup = this.generateSVGTable();
+
+		const svgBlob = new Blob([svgMarkup], { type: 'image/svg+xml' });
+		const url = URL.createObjectURL(svgBlob);
+
+		const img = new Image();
+		img.crossOrigin = 'anonymous';
+		img.onload = () => {
+			const scaleFactor = 1.5;  // Increase to 2x resolution
+			const canvas = document.createElement('canvas');
+			canvas.width = img.width * scaleFactor;
+			canvas.height = img.height * scaleFactor;
+			const ctx = canvas.getContext('2d')!;
+
+			// Scale context for high quality
+			ctx.scale(scaleFactor, scaleFactor);
+			ctx.drawImage(img, 0, 0);
+			URL.revokeObjectURL(url);
+
+			// Download with higher quality
+			const link = document.createElement('a');
+			link.href = canvas.toDataURL('image/png', 1.0); // Quality set to 1 (highest)
+			link.download = 'table.png';
+			link.click();
+		};
+		img.src = url;
+	}
+
+	generateSVGTable() {
+		const numberOfRows = 20;
+		const rowHeight = 60;
+		const padding = 50;
+		const upperMargin = 80;
+		const fontFamily = "Trebuchet MS";
+		const characterWidth = 14;
+
+		let columnwidth = Object.keys(this.jsonData[0]).map(d => d.length * characterWidth + padding);
+
+		for (let i = 0; i < this.jsonData.length; i++) {
+			let values = Object.values(this.jsonData[i]);
+			for (let j = 0; j < values.length; j++) {
+				columnwidth[j] = Math.max(String(values[j]).length * characterWidth + padding, columnwidth[j])
+			}
+		}
+
+		let arr = [];
+		let x = 0;
+		for (let i = 0; i < columnwidth.length; i++) {
+			x += columnwidth[i];
+			arr.push(x);
+		}
+
+		const canvasHeight = rowHeight * numberOfRows + padding + upperMargin;
+		const canvasWidth = arr[arr.length-1] + padding;
+
+		const boxHeight = canvasHeight - padding - upperMargin;
+		const boxWidth = canvasWidth - padding;
+		const halfPadding = padding / 2;
+
+		const linestartTopY1 = halfPadding + upperMargin;
+		const linestartTopY2 = (halfPadding + upperMargin);
+		const horizontalLineX1 = halfPadding;
+		const horizontalLineX2 = canvasWidth - halfPadding;
+
+		let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${canvasHeight}">
+
+		<rect width="100%" height="100%" fill="#ffff" />
+
+		<rect width="${boxWidth}" height="${boxHeight}" x="${halfPadding}" y="${halfPadding + upperMargin}" rx="20" ry="20" fill="white"
+		style="stroke-width:3;stroke:gray" /> 
+		
+		<text x="50%" y="${(halfPadding + upperMargin) / 2}" alignment-baseline="middle" text-anchor="middle" fill="black" font-weight="550" font-family="${fontFamily}" font-size="34">December 2024</text>`;
+
+		for (let i = rowHeight; i < rowHeight * numberOfRows; i += rowHeight) {
+			svg += `<line x1="${horizontalLineX1}" y1="${linestartTopY1 + i}" x2="${horizontalLineX2}" y2="${linestartTopY2 + i}" style="stroke-width:3;stroke:gray" />`;
+		}
+
+		let j = columnwidth[0];
+		for (let i = 1; i < columnwidth.length; i++) {
+			svg += `<line x1="${j}" y1="${halfPadding + upperMargin}" x2="${j}" y2="${canvasHeight - halfPadding - rowHeight}" style="stroke-width:3;stroke:gray" />`;
+			j += columnwidth[i];
+		}
+
+		for(let i=0;i<this.jsonData.length;i++){
+			for(let j=0;j<arr.length-1;j++){
+				svg+=`<text x="${j+halfPadding}" y="${linestartTopY1 + rowHeight}" alignment-baseline="middle" text-anchor="middle" fill="black" font-family="${fontFamily}" font-size="23"></text>`;
+			}
+		}
+
+
+		svg += '</svg> '; // Set background color
+
+		return svg;
+
+	}
+
+
+
+}

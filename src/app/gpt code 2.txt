@@ -1,0 +1,99 @@
+import { Component } from '@angular/core';
+import { GoogleTranslateComponent } from "./google-translate/google-translate.component";
+import { FetchdataService } from './fetchdata.service';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [GoogleTranslateComponent],
+  template: `
+    <button (click)="downloadImage()">Download JSON as Image</button>
+  `
+})
+export class AppComponent {
+  jsonData = [
+    { flatno: '1', name: 'John Doe', amount: 25, status: 'Unpaid', date: '2023-10-01' },
+    { flatno: '2', name: 'Jane Smith', amount: 30, status: 'Paid', date: '2023-10-02' }
+  ];
+
+  // Constants for SVG
+  readonly rowHeight = 60;
+  readonly padding = 50;
+  readonly upperMargin = 80;
+  readonly fontFamily = "Trebuchet MS";
+  readonly characterWidth = 14;
+  readonly numberOfRows = 20;
+  
+  downloadImage() {
+    const svgMarkup = this.generateSVGTable();
+    const svgBlob = new Blob([svgMarkup], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(svgBlob);
+    
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const scaleFactor = 1.5;
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scaleFactor;
+      canvas.height = img.height * scaleFactor;
+      const ctx = canvas.getContext('2d')!;
+      ctx.scale(scaleFactor, scaleFactor);
+      ctx.drawImage(img, 0, 0);
+      URL.revokeObjectURL(url);
+
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png', 1.0);
+      link.download = 'table.png';
+      link.click();
+    };
+    img.src = url;
+  }
+
+  calculateColumnWidths() {
+    const { padding, characterWidth } = this;
+    const headers = Object.keys(this.jsonData[0]);
+    const columnWidths = headers.map(header => header.length * characterWidth + padding);
+    
+    this.jsonData.forEach(row => {
+      Object.values(row).forEach((value, index) => {
+        columnWidths[index] = Math.max(String(value).length * characterWidth + padding, columnWidths[index]);
+      });
+    });
+    return columnWidths;
+  }
+
+  generateSVGTable() {
+    const { rowHeight, padding, upperMargin, fontFamily, numberOfRows } = this;
+    const columnWidths = this.calculateColumnWidths();
+    
+    const canvasHeight = rowHeight * numberOfRows + padding + upperMargin;
+    const canvasWidth = columnWidths.reduce((sum, width) => sum + width, padding);
+    const boxHeight = canvasHeight - padding - upperMargin;
+    const boxWidth = canvasWidth - padding;
+    const halfPadding = padding / 2;
+
+    const headerTextY = (halfPadding + upperMargin) / 2;
+
+    let svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${canvasHeight}">
+        <rect width="100%" height="100%" fill="#ffff" />
+        <rect width="${boxWidth}" height="${boxHeight}" x="${halfPadding}" y="${halfPadding + upperMargin}" rx="20" ry="20" fill="white" style="stroke-width:3;stroke:gray" />
+        <text x="50%" y="${headerTextY}" alignment-baseline="middle" text-anchor="middle" fill="black" font-weight="550" font-family="${fontFamily}" font-size="34">December 2024</text>
+    `;
+
+    // Draw horizontal lines for each row
+    for (let i = rowHeight; i < rowHeight * numberOfRows; i += rowHeight) {
+      svg += `<line x1="${halfPadding}" y1="${upperMargin + halfPadding + i}" x2="${canvasWidth - halfPadding}" y2="${upperMargin + halfPadding + i}" style="stroke-width:3;stroke:gray" />`;
+    }
+
+    // Draw vertical column lines
+    let xPosition = halfPadding + columnWidths[0];
+    for (let i = 1; i < columnWidths.length; i++) {
+      svg += `<line x1="${xPosition}" y1="${upperMargin + halfPadding}" x2="${xPosition}" y2="${canvasHeight - halfPadding - rowHeight}" style="stroke-width:3;stroke:gray" />`;
+      xPosition += columnWidths[i];
+    }
+
+    svg += '</svg>';
+    return svg;
+  }
+}

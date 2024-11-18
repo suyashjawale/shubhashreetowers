@@ -1,0 +1,69 @@
+<app-google-translate />
+<div class="container">
+	<div class="mt-2 mb-3 fw-semibold text-center">
+		घेतलेला मेन्टेनन्स हा मागील महिन्यासाठी गृहीत धरला जातो
+	</div>
+	<div class="d-flex justify-content-end my-3">
+		<div class="btn-group">
+			<button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+				aria-expanded="false">
+				Export
+			</button>
+			<ul class="dropdown-menu">
+				<li><a class="dropdown-item" (click)="downloadPdf()">Download PDF</a></li>
+				<li><a class="dropdown-item" (click)="downloadExcel()">Download Excel</a></li>
+				<li><a class="dropdown-item" (click)="downloadOnlyMaintenanceImages()">Export only maintenance as Images</a></li>
+				<li><a class="dropdown-item" (click)="downloadOnlyMaintenancePDF()">Export only maintenance as PDF</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="accordion pb-5" id="accordionExample">
+
+		@for (data of jsonData;let i = $index; track i) {
+		<div class="accordion-item border-0 mb-2">
+			<h2 class="accordion-header">
+				<button class="accordion-button collapsed border border-secondary-subtle bg-white shadow-none rounded"
+					type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+i" aria-expanded="false"
+					[attr.aria-controls]="'collapse'+i">
+					{{data.monthName}}
+				</button>
+			</h2>
+			<div [attr.id]="'collapse'+i" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+				<div class="accordion-body px-0">
+					<button class="btn btn-success btn-sm" (click)="downloadImage(i,1)">Download Image</button>
+					<table class="table table-bordered my-2 font-xs">
+						<thead>
+							<tr>
+								<th>Flat</th>
+								<th>Owner</th>
+								<th>Amount</th>
+								<th>Status</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							@for (member of data.maintenance; track $index) {
+							<tr>
+								<td>{{member['Flat No']}}</td>
+								<td class="text-break">{{member['Owner Name']}}</td>
+								<td>{{member['Amount']}}</td>
+								<td class="text-white" [ngClass]="[member.Status=='Paid'?'bg-success':'bg-danger']">
+									{{member['Status']}}
+								</td>
+								<td class="text-nowrap">{{member['Payment Date']}}</td>
+							</tr>
+							}
+							<tr>
+								<th>Total</th>
+								<td colspan="4">{{data.totalAmount}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		}
+
+	</div>
+</div>
