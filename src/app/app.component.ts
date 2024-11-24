@@ -4,6 +4,9 @@ import { GoogleTranslateComponent } from "./google-translate/google-translate.co
 import { FetchdataService } from './fetchdata.service';
 import { Maintenance } from './maintenance';
 import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable'
+import { jsonData } from './jsonData';
+import { MonthData } from './month-data';
 
 @Component({
 	selector: 'app-root',
@@ -14,64 +17,8 @@ import { jsPDF } from 'jspdf';
 })
 
 export class AppComponent {
-	jsonData: {
-		monthName: string,
-		totalAmount: string,
-		maintenance: Maintenance[]
-	}[]
-		=
-		[
-			{
-				monthName: "July 2023",
-				totalAmount: "2222",
-				maintenance: [
-					{ "Flat No": '1', "Owner Name": 'John Doe', "Amount": 25, "Status": 'Unpaid', "Payment Date": '2023-10-01' },
-					{ "Flat No": '2', "Owner Name": 'Jane Smith Jane Smith Jane Smith Jane Smith Jane Smith Jane SmithJane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '3', "Owner Name": '1Jane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '4', "Owner Name": '2Jane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '5', "Owner Name": 'Jedeane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '6', "Owner Name": 'Janeddd Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '7', "Owner Name": 'Jadfne Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '8', "Owner Name": 'Janed Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '9', "Owner Name": 'Jane sdSmith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '10', "Owner Name": 'Jane Ssdmith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '11', "Owner Name": 'Jane Smisdth', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '12', "Owner Name": 'Janesdd Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '13', "Owner Name": 'Jasdne Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '14', "Owner Name": 'Janesd Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '15', "Owner Name": 'Jane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '16', "Owner Name": 'Jasdsdrfne Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '17', "Owner Name": 'Janeff Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '18', "Owner Name": 'Jane er Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-				]
-			},
-			{
-				monthName: "June 2023",
-				totalAmount: "2222",
-				maintenance: [
-					{ "Flat No": '1', "Owner Name": 'John Doe', "Amount": 25, "Status": 'Unpaid', "Payment Date": '2023-10-01' },
-					{ "Flat No": '2', "Owner Name": 'Jane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '3', "Owner Name": '1Jane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '4', "Owner Name": '2Jane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '5', "Owner Name": 'Jedeane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '6', "Owner Name": 'Janeddd Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '7', "Owner Name": 'Jadfne Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '8', "Owner Name": 'Janed Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '9', "Owner Name": 'Jane sdSmith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '10', "Owner Name": 'Jane Ssdmith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '11', "Owner Name": 'Jane Smisdth', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '12', "Owner Name": 'Janesdd Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '13', "Owner Name": 'Jasdne Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '14', "Owner Name": 'Janesd Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '15', "Owner Name": 'Jane Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '16', "Owner Name": 'Jasdsdrfne Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '17', "Owner Name": 'Janeff Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-					{ "Flat No": '18', "Owner Name": 'Jane er Smith', "Amount": 30, "Status": 'Paid', "Payment Date": '2023-10-02' },
-				]
-			}
-
-		];
-
+	title = 'Shubhashree Towers';
+	showLoader: boolean = true;
 	private readonly scaleFactor = 1.5;
 	private readonly padding = 50;
 	private readonly halfPadding = this.padding / 2;
@@ -79,9 +26,23 @@ export class AppComponent {
 	private readonly upperMargin = 80;
 	private readonly fontFamily = "Trebuchet MS";
 	private readonly characterWidth = 15;
+	jsonData: MonthData[] = jsonData;
 
+	constructor(private fetchdataservice: FetchdataService) { }
 
-	downloadImage(monthIndex: number, tabInd: number, isPDF: boolean = false): Promise<[string, number, number] | void> {
+	ngOnInit() {
+		// this.fetchdataservice.fetchData().subscribe({
+		//   next: data => {
+		//     this.showLoader = false;
+		//   },
+		//   error: error => {
+		//     console.log(error);
+		//   }
+		// })
+		this.showLoader = false;
+	}
+
+	downloadSVGImage(monthIndex: number, tabInd: number, isPDF: boolean = false): Promise<[string, number, number] | void> {
 		return new Promise((resolve, reject) => {
 			let svgMarkup;
 			if (tabInd === 1) {
@@ -125,7 +86,7 @@ export class AppComponent {
 		if (!isPDF) {
 			const link = document.createElement('a');
 			link.href = dataurl;
-			link.download = `${this.jsonData[monthIndex].monthName}.png`;
+			link.download = `${this.jsonData[monthIndex].month_name}.png`;
 			link.click();
 		}
 		return [dataurl, img.width, img.height];
@@ -143,7 +104,7 @@ export class AppComponent {
 		let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${canvasHeight}">
 		<rect width="100%" height="100%" fill="#ffff" />
 		<rect width="${boxWidth}" height="${boxHeight}" x="${this.halfPadding}" y="${this.halfPadding + this.upperMargin}" rx="20" ry="20" fill="white" style="stroke-width:3;stroke:gray" />
-		<text x="50%" y="${(this.halfPadding + this.upperMargin) / 2}" alignment-baseline="middle" text-anchor="middle" fill="black" font-weight="550" font-family="${this.fontFamily}" font-size="34">${this.jsonData[monthIndex].monthName}</text>`;
+		<text x="50%" y="${(this.halfPadding + this.upperMargin) / 2}" alignment-baseline="middle" text-anchor="middle" fill="black" font-weight="550" font-family="${this.fontFamily}" font-size="34">${this.jsonData[monthIndex].month_name}</text>`;
 
 		// Draw horizontal lines
 		for (let i = this.rowHeight; i < this.rowHeight * (data.length + 2); i += this.rowHeight) {
@@ -169,7 +130,7 @@ export class AppComponent {
 				}
 				else {
 					if (j == 3) {
-						svg += `<rect width="${columnMarkers[j + 1] - columnMarkers[j] - this.halfPadding}" height="${this.rowHeight - 10}" x="${columnMarkers[j] + this.halfPadding / 2}" y="${this.halfPadding + this.upperMargin + this.rowHeight * (i + 1) + 5}" rx="10" ry="10" fill="${objValues[j] == "Paid" ? "green" : "red"}" />`;
+						svg += `<rect width="${columnMarkers[j + 1] - columnMarkers[j] - this.halfPadding}" height="${this.rowHeight - 10}" x="${columnMarkers[j] + this.halfPadding / 2}" y="${this.halfPadding + this.upperMargin + this.rowHeight * (i + 1) + 5}" rx="10" ry="10" fill="${objValues[j] == "Paid" ? "rgb(25 135 84)" : "rgb(220 53 69)"}" />`;
 					}
 					svg += `<text x="${(columnMarkers[j] + columnMarkers[j + 1]) / 2}" y="${this.halfPadding + this.upperMargin + this.rowHeight * (i + 1) + 2 + this.rowHeight / 2}" text-anchor="middle" alignment-baseline="middle" fill="${j == 3 ? "white" : "black"}" font-family="${this.fontFamily}" font-size="25">${objValues[j]}</text>`;
 				}
@@ -178,7 +139,7 @@ export class AppComponent {
 
 		svg += `<text x="${(columnMarkers[0] + columnMarkers[1]) / 2}" y="${boxHeight + this.rowHeight + this.halfPadding - 10}" font-weight="bold" text-anchor="middle" alignment-baseline="middle" fill="black" font-family="${this.fontFamily}" font-size="25">Total</text>`;
 
-		svg += `<text x="${columnMarkers[1] - 29}" y="${boxHeight + this.rowHeight + this.halfPadding - 10}" font-weight="bold" alignment-baseline="middle" fill="black" font-family="${this.fontFamily}" font-size="25">=   ${this.jsonData[monthIndex].totalAmount}</text>`;
+		svg += `<text x="${columnMarkers[1] - 10}" y="${boxHeight + this.rowHeight + this.halfPadding - 10}" font-weight="bold" alignment-baseline="middle" fill="black" font-family="${this.fontFamily}" font-size="25">= ${this.jsonData[monthIndex].savings.maintenance_total}</text>`;
 
 		svg += '</svg>';
 		return svg;
@@ -208,16 +169,16 @@ export class AppComponent {
 		throw new Error('Method not implemented.');
 	}
 
-	downloadOnlyMaintenanceImages() {
+	downloadSVGOnlyMaintenanceImages() {
 		for (let i = 0; i < this.jsonData.length; i++) {
-			this.downloadImage(i, 1);
+			this.downloadSVGImage(i, 1);
 		}
 	}
 
-	async downloadOnlyMaintenancePDF() {
+	async downloadSVGOnlyMaintenancePDF() {
 		const pdf = new jsPDF();
 
-		const promises = this.jsonData.map((_, i) => this.downloadImage(i, 1, true));
+		const promises = this.jsonData.map((_, i) => this.downloadSVGImage(i, 1, true));
 
 		try {
 			const results = await Promise.all(promises);
@@ -227,29 +188,90 @@ export class AppComponent {
 
 					let imageWidth = data[1];
 					let imageHeight = data[2];
-		
-					// Calculate appropriate scaling (optional, can be adjusted based on requirements)
-					const maxImageWidth = pdf.internal.pageSize.getWidth(); // Get PDF page width
-					const maxImageHeight = pdf.internal.pageSize.getHeight() - 20; // Account for margin
-		
+
+					const maxImageWidth = pdf.internal.pageSize.getWidth();
+					const maxImageHeight = pdf.internal.pageSize.getHeight() - 20;
+
 					let scale = 1;
 					if (imageWidth > maxImageWidth || imageHeight > maxImageHeight) {
 						scale = Math.min(maxImageWidth / imageWidth, maxImageHeight / imageHeight);
 					}
-		
+
 					const scaledWidth = imageWidth * scale;
 					const scaledHeight = imageHeight * scale;
-		
-					pdf.addImage(data[0], 'PNG', 0, 0, scaledWidth, scaledHeight);
+
+					pdf.addImage(data[0], 'PNG', 7, 7, scaledWidth - 14, scaledHeight - 14);
 					if (i < results.length - 1) {
 						pdf.addPage();
 					}
 				}
 			});
 
-			pdf.save('MaintenancePDF.pdf');
+			pdf.save('MaintenancePDF.pdf', { returnPromise: true }).then(() => { setTimeout(() => this.showLoader = false, 3000) });
+
 		} catch (error) {
 			console.error('Error generating PDF:', error);
 		}
 	}
+
+	downloadPdfJs(completeData:MonthData[], pdfType: string) {
+		const doc = new jsPDF();
+
+		for (let i = 0; i < completeData.length; i++) {
+			doc.text('Theme "grid"', 14, 8)
+			autoTable(doc, {
+				head: [['Flat', 'Owner Name', 'Amount', 'Status', 'Date']],
+				body: completeData[i].maintenance.map(row => Object.values(row)),
+				foot: [['Total', completeData[i].savings.maintenance_total]],
+				willDrawCell: (data) => {
+					if (data.column.index === 3) {
+						const status = data.cell.raw;
+						if (status == 'Unpaid') {
+							doc.setFillColor(220, 53, 69);
+							doc.setTextColor(255, 255, 255);
+						}
+						else if (status == 'Paid') {
+							doc.setFillColor(25, 135, 84);
+							doc.setTextColor(255, 255, 255);
+						}
+						doc.rect(
+							data.cell.x,
+							data.cell.y,
+							data.cell.width,
+							data.cell.height,
+							"F"
+						);
+					}
+				},
+			})
+			if(pdfType=='full'){
+				console.log("HEllo");
+			}
+			if (i < completeData.length - 1)
+				doc.addPage();
+		}
+
+		doc.save('table.pdf')
+	}
+
+	downloadCompleteExcel() {
+		throw new Error('Method not implemented.');
+	}
+
+	downloadMaintenanceExcel() {
+		throw new Error('Method not implemented.');
+	}
+
+	downloadMaintenancePDF2Canvas() {
+		throw new Error('Method not implemented.');
+	}
+
+	downloadMaintenanceImages2Canvas() {
+		throw new Error('Method not implemented.');
+	}
+
+	downloadHtml2CanvasImage() {
+		throw new Error('Method not implemented.');
+	}
+
 }

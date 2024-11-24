@@ -1,1 +1,7 @@
-.font_a { font-family: "Roboto Condensed" }
+.pointer {
+    cursor: pointer !important;
+}
+
+.l-type-none {
+    list-style-type: none;
+}

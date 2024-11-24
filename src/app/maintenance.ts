@@ -1,7 +1,7 @@
 export interface Maintenance {
-    "Flat No": string,
-    "Owner Name": string,
-    "Amount": number,
-    "Status": string,
-    "Payment Date": string
+    Flat: number,
+    Owner: string,
+    Status: string,
+    Amount: number,
+    Date: string
 }
