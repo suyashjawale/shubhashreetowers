@@ -45,7 +45,7 @@ router.get("/",async (req,res)=>{
     results.forEach( async (element, index, arr) => {
         let month_id = element.month_id;
         let month_name = element.month_name;
-        let maintenance = await getInfo('select m.*,name from maintenance m, members me where m.maintenance_flat_no=me.flat_no and maintenance_month_id = ?',[element.month_id]);
+        let maintenance = await getInfo(`select maintenance_flat_no as Flat,name as Owner, maintenance_amount as Amount,CASE WHEN maintenance_status=1 THEN 'Paid' ELSE 'Unpaid' END as Status, DATE_FORMAT(maintenance_date,"%d %b %Y") as Date from maintenance m, members me where m.maintenance_flat_no=me.flat_no and maintenance_month_id = ?`,[element.month_id]);
         let earnings = await getInfo('select * from earnings where earning_month= ? ',[element.month_id])
         let expenses = await getInfo('select * from expenses where expense_month= ? ',[element.month_id])
         let savings = await getInfo('select * from savings where saving_month_id= ?',[element.month_id])
@@ -63,8 +63,8 @@ router.get("/",async (req,res)=>{
         processed++;
         if (processed == arr.length) {
             month = month.sort((x, y) => y.date - x.date)
-            redisClient.json.set('results', '$', month)
-            res.status(200).send("ok");
+            // redisClient.json.set('results', '$', month)
+            res.status(200).send(month);
         }
     })
 
