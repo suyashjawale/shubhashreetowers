@@ -46,8 +46,8 @@ router.get("/",async (req,res)=>{
         let month_id = element.month_id;
         let month_name = element.month_name;
         let maintenance = await getInfo(`select maintenance_flat_no as Flat,name as Owner, maintenance_amount as Amount,CASE WHEN maintenance_status=1 THEN 'Paid' ELSE 'Unpaid' END as Status, DATE_FORMAT(maintenance_date,"%d %b %Y") as Date from maintenance m, members me where m.maintenance_flat_no=me.flat_no and maintenance_month_id = ?`,[element.month_id]);
-        let earnings = await getInfo('select * from earnings where earning_month= ? ',[element.month_id])
-        let expenses = await getInfo('select * from expenses where expense_month= ? ',[element.month_id])
+        let earnings = await getInfo('select earning_title, earning_amount, earning_date from earnings where earning_month= ? ',[element.month_id])
+        let expenses = await getInfo('select expense_title, expense_amount, expense_date from expenses where expense_month= ? ',[element.month_id])
         let savings = await getInfo('select * from savings where saving_month_id= ?',[element.month_id])
         let date = await getInfo('select created_date from months where month_id = ?',[element.month_id])
 
