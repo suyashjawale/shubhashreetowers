@@ -58,21 +58,27 @@
 					<div [attr.id]="'collapse'+i" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
 						<div class="accordion-body px-0">
 
-							<div class="btn-group">
-								<button class="btn btn-success btn-sm dropdown-toggle" type="button"
-									data-bs-toggle="dropdown" aria-expanded="false">
-									Download
-								</button>
-								<ul class="dropdown-menu">
-									<li><a class="dropdown-item pointer" (click)="downloadSVGImage(i,1)">SVG Image</a></li>
-									<li><a class="dropdown-item pointer" (click)="downloadHtml2CanvasImage()">Html2Canvas
-											Image</a></li>
-									<li><a class="dropdown-item pointer" (click)="downloadHtml2CanvasImage()">Full PDF
-											Js</a>
-									</li>
-								</ul>
+							<div class="d-flex justify-content-between">
+								<div>
+									<h5>Maintenance</h5>
+								</div>
+								<div>
+									<div class="btn-group">
+										<button class="btn btn-success btn-sm dropdown-toggle" type="button"
+											data-bs-toggle="dropdown" aria-expanded="false">
+											Download
+										</button>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item pointer" (click)="downloadSVGImage(i,1)">SVG Image</a></li>
+											<li><a class="dropdown-item pointer" (click)="downloadHtml2CanvasImage()">Html2Canvas
+													Image</a></li>
+											<li><a class="dropdown-item pointer" (click)="downloadHtml2CanvasImage()">Full PDF
+													Js</a>
+											</li>
+										</ul>
+									</div>
+								</div>
 							</div>
-
 							<table class="table table-bordered my-2 font-xs">
 								<thead>
 									<tr>
@@ -101,6 +107,92 @@
 									</tr>
 								</tbody>
 							</table>
+
+							@if(data.earnings.length>0){
+								<h5 class="pt-4">Earnings</h5>
+								<table class="table table-bordered my-2 font-xs">
+									<thead>
+										<tr>
+											<th>S.No</th>
+											<th>Task</th>
+											<th>Amount</th>
+											<th>Date</th>
+										</tr>
+									</thead>
+									<tbody>
+										@for (earning of data.earnings; track $index) {
+										<tr>
+											<td>{{$index + 1}}</td>
+											<td class="text-break">{{earning.earning_title}}</td>
+											<td>{{earning.earning_amount}}</td>
+											<td class="text-nowrap">{{earning.earning_date}}</td>
+										</tr>
+										}
+										<tr>
+											<th>Total</th>
+											<td colspan="4">{{data.savings.earnings_total}}</td>
+										</tr>
+									</tbody>
+								</table>
+							}
+
+							@if(data.expenses.length>0){
+								<h5 class="pt-4">Expenses</h5>
+								<table class="table table-bordered my-2 font-xs">
+									<thead>
+										<tr>
+											<th>S.No</th>
+											<th>Task</th>
+											<th>Amount</th>
+											<th>Date</th>
+										</tr>
+									</thead>
+									<tbody>
+										@for (earning of data.expenses; track $index) {
+										<tr>
+											<td>{{$index + 1}}</td>
+											<td class="text-break">{{earning.expense_title}}</td>
+											<td>{{earning.expense_amount}}</td>
+											<td class="text-nowrap">{{earning.expense_date}}</td>
+										</tr>
+										}
+										<tr>
+											<th>Total</th>
+											<td colspan="4">{{data.savings.expenses_total}}</td>
+										</tr>
+									</tbody>
+								</table>
+							}
+
+							<h5 class="pt-4">Savings</h5>
+							<table class="table table-bordered my-2 font-xs">
+								<tbody>
+									<tr>
+										<th scope="row">&nbsp;&nbsp; Maintenance</th>
+										<td>{{data.savings.maintenance_total}}</td>
+									</tr>
+									<tr>
+										<th scope="row">+ Prev. Savings</th>
+										<td>{{data.savings.earnings_total}}</td>
+									</tr>
+									<tr>
+										<th scope="row">+ Extra Earnings</th>
+										<td>{{data.savings.earnings_total}}</td>
+									</tr>
+									<tr>
+										<th scope="row">- &nbsp;Expenses</th>
+										<td>{{data.savings.expenses_total}}</td>
+									</tr>
+									<tr>
+										<th scope="row">Total</th>
+										<td>{{data.savings.total}}</td>
+									</tr>
+									<tr>
+										<th scope="row" colspan="2">{{data.savings.note}}</th>
+									</tr>
+								</tbody>
+							</table>
+
 						</div>
 					</div>
 				</div>
