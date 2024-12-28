@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const mysql = require('mysql')
+const mysql = require('mysql2')
 const auth = require('./functions/auth.js')
 const capitalize = require('./functions/capitalize.js')
 const update_total= require('./functions/update_savings.js')

@@ -3,7 +3,7 @@ const router = express.Router()
 const auth = require('./functions/auth.js')
 const capitalize = require('./functions/capitalize.js')
 const update_total = require('./functions/update_savings.js')
-const mysql = require('mysql')
+const mysql = require('mysql2')
 
 router.post('/', auth, (req, res) => {
 

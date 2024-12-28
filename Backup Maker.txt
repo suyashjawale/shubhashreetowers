@@ -2,9 +2,9 @@ open cmd as administrator
 
 change file name
 
-cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
+cd "C:\Program Files\MySQL\MySQL Server 9.1\bin"
 
-Command - mysqldump -u root -p -P 3306 building > C:\Users\Suyash\Desktop\shubhashreetowers\16-april-2023.sql
+Command - mysqldump -u root -p -P 3306 building > C:\Users\Suyash\Desktop\Admin_Shubhashree\16-april-2023.sql
 
 
 _________________________________________________
@@ -17,9 +17,9 @@ open cmd as administrator
 
 change file name
 
-cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
+cd "C:\Program Files\MySQL\MySQL Server 9.1\bin"
 
-mysql -h localhost -p -u root -P 3306 building < C:\Users\Suyash\Desktop\shubhashreetowers\23-june-2023.sql
+mysql -h localhost -p -u root -P 3306 building < C:\Users\Suyash\Desktop\Admin_Shubhashree\21-December-2024.sql
 
 ______________________________________________
 
