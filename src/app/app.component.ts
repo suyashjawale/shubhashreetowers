@@ -5,7 +5,7 @@ import { FetchdataService } from './service/fetchdata.service';
 import { Maintenance } from './interface/maintenance';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable'
-import { jsonData } from './jsonData';
+// import { jsonData } from './jsonData';
 import { MonthData } from './interface/month-data';
 
 @Component({
@@ -26,19 +26,20 @@ export class AppComponent {
 	private readonly upperMargin = 80;
 	private readonly fontFamily = "Trebuchet MS";
 	private readonly characterWidth = 15;
-	jsonData: MonthData[] = jsonData;
+	jsonData: MonthData[] = [];
 
 	constructor(private fetchdataservice: FetchdataService) { }
 
 	ngOnInit() {
-		// this.fetchdataservice.fetchData().subscribe({
-		//   next: data => {
-		//     this.showLoader = false;
-		//   },
-		//   error: error => {
-		//     console.log(error);
-		//   }
-		// })
+		this.fetchdataservice.fetchData().subscribe({
+			next: data => {
+				this.jsonData = data;
+				this.showLoader = false;
+			},
+			error: error => {
+				console.log(error);
+			}
+		})
 		this.showLoader = false;
 	}
 
@@ -216,7 +217,7 @@ export class AppComponent {
 
 	downloadPdfJs(completeData: MonthData[], pdfType: string) {
 		const doc = new jsPDF();
-		
+
 		let pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
 		let pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
 
@@ -299,16 +300,15 @@ export class AppComponent {
 						fontStyle: 'bold',
 					},
 					body: [
-						['Maintenance Amount',completeData[i].savings.maintenance_total],
-						['Previous Month Savings',completeData[i].savings.previous_month_total],
-						['Earnings Amount',completeData[i].savings.earnings_total],
-						['Expenses Amount',completeData[i].savings.expenses_total],
-						['Total',completeData[i].savings.expenses_total],
-						['Note',completeData[i].savings.note],
+						['Maintenance Amount', completeData[i].savings.maintenance_total],
+						['Previous Month Savings', completeData[i].savings.previous_month_total],
+						['Earnings Amount', completeData[i].savings.earnings_total],
+						['Expenses Amount', completeData[i].savings.expenses_total],
+						['Total', completeData[i].savings.expenses_total],
+						[completeData[i].savings.note],
 					],
 					didParseCell: (data) => {
 						if (data.row.index === 4) {
-							data.cell.styles.fontStyle = 'bold';
 							data.cell.styles.textColor = 'white';
 							data.cell.styles.fillColor = '#2969ff';
 						}
