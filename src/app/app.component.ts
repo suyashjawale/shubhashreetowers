@@ -40,7 +40,6 @@ export class AppComponent {
 				console.log(error);
 			}
 		})
-		this.showLoader = false;
 	}
 
 	downloadSVGImage(monthIndex: number, tabInd: number, isPDF: boolean = false): Promise<[string, number, number] | void> {
