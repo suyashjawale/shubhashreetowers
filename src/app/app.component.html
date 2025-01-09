@@ -189,7 +189,11 @@
 									<td class="text-white" [ngClass]="[member.Status=='Paid'?'bg-success':'bg-danger']">
 										{{member.Status}}
 									</td>
-									<td class="text-nowrap">{{member.Date}}</td>
+									<td class="text-nowrap">
+										@if(member.Status=='Paid'){
+											{{member.Date}}
+										}
+									</td>
 								</tr>
 								}
 								<tr>
