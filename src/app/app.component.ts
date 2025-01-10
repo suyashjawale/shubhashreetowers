@@ -132,7 +132,8 @@ export class AppComponent {
 					if (j == 3) {
 						svg += `<rect width="${columnMarkers[j + 1] - columnMarkers[j] - this.halfPadding}" height="${this.rowHeight - 10}" x="${columnMarkers[j] + this.halfPadding / 2}" y="${this.halfPadding + this.upperMargin + this.rowHeight * (i + 1) + 5}" rx="10" ry="10" fill="${objValues[j] == "Paid" ? "rgb(25 135 84)" : "rgb(220 53 69)"}" />`;
 					}
-					svg += `<text x="${(columnMarkers[j] + columnMarkers[j + 1]) / 2}" y="${this.halfPadding + this.upperMargin + this.rowHeight * (i + 1) + 2 + this.rowHeight / 2}" text-anchor="middle" alignment-baseline="middle" fill="${j == 3 ? "white" : "black"}" font-family="${this.fontFamily}" font-size="25">${objValues[j]}</text>`;
+					let value = (j==4 || j==2) && objValues[3] =='Unpaid' ? '' : objValues[j];
+					svg += `<text x="${(columnMarkers[j] + columnMarkers[j + 1]) / 2}" y="${this.halfPadding + this.upperMargin + this.rowHeight * (i + 1) + 2 + this.rowHeight / 2}" text-anchor="middle" alignment-baseline="middle" fill="${j == 3 ? "white" : "black"}" font-family="${this.fontFamily}" font-size="25">${value}</text>`;
 				}
 			}
 		}
